@@ -61,26 +61,18 @@ function onTap(tap) {
   if (earned) celebrate(earned);
 }
 
-// Drag after a small movement, so a plain click can still be a boop and a
-// double-click can still open the settings.
-let pressedAt = null;
+// Like Tauri's own drag regions: start the drag on mouse down (the only
+// moment every system accepts it), and spot a double-click by its click
+// count. Grabbing the buddy is also a little boop.
 document.addEventListener('mousedown', (e) => {
-  if (e.button === 0) pressedAt = { x: e.screenX, y: e.screenY };
-});
-document.addEventListener('mousemove', (e) => {
-  if (!pressedAt || !(e.buttons & 1)) return;
-  if (Math.hypot(e.screenX - pressedAt.x, e.screenY - pressedAt.y) > 3) {
-    pressedAt = null;
-    startDragging();
+  if (e.button !== 0) return;
+  if (e.detail === 2) {
+    invoke('open_settings_window');
+    return;
   }
+  stage?.boop();
+  startDragging();
 });
-document.addEventListener('mouseup', (e) => {
-  if (e.button === 0 && pressedAt) {
-    pressedAt = null;
-    stage.boop();
-  }
-});
-document.addEventListener('dblclick', () => invoke('open_settings_window'));
 document.addEventListener('contextmenu', (e) => {
   e.preventDefault();
   invoke('show_buddy_menu');

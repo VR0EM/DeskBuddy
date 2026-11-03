@@ -176,7 +176,10 @@ fn read_json<T: DeserializeOwned>(path: &Path) -> Option<T> {
     match serde_json::from_str(&text) {
         Ok(value) => Some(value),
         Err(e) => {
-            eprintln!("[deskbuddy] {} is unreadable ({e}), keeping a copy", path.display());
+            eprintln!(
+                "[deskbuddy] {} is unreadable ({e}), keeping a copy",
+                path.display()
+            );
             let stamp = chrono::Local::now().format("%Y%m%d-%H%M%S");
             let _ = fs::rename(path, path.with_extension(format!("json.broken-{stamp}")));
             None
@@ -198,7 +201,8 @@ mod tests {
     use super::*;
 
     fn temp_dir(name: &str) -> PathBuf {
-        let dir = std::env::temp_dir().join(format!("deskbuddy-test-{name}-{}", std::process::id()));
+        let dir =
+            std::env::temp_dir().join(format!("deskbuddy-test-{name}-{}", std::process::id()));
         let _ = fs::remove_dir_all(&dir);
         dir
     }

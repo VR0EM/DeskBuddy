@@ -14,7 +14,7 @@ use tauri::image::Image;
 use tauri::menu::{CheckMenuItemBuilder, Menu, MenuBuilder, MenuEvent};
 use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
 use tauri::{
-    AppHandle, Emitter, LogicalSize, Manager, PhysicalPosition, RunEvent, WebviewUrl,
+    AppHandle, Emitter, LogicalSize, Manager, PhysicalPosition, PhysicalSize, RunEvent, WebviewUrl,
     WebviewWindow, WebviewWindowBuilder, Window, WindowEvent, Wry,
 };
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt};
@@ -284,8 +284,8 @@ fn create_buddy_window(app: &AppHandle, settings: &Settings) -> tauri::Result<We
     let saved = settings
         .position
         .map(|[x, y]| PhysicalPosition::new(x, y))
-        .filter(|p| is_on_screen(&window, *p));
-    if let Some(position) = saved.or_else(|| default_position(&window)) {
+        .filter(|p| is_on_screen(&window, *p, settings.scale));
+    if let Some(position) = saved.or_else(|| default_position(&window, settings.scale)) {
         let _ = window.set_position(position);
     }
     if settings.click_through {
@@ -297,30 +297,34 @@ fn create_buddy_window(app: &AppHandle, settings: &Settings) -> tauri::Result<We
     Ok(window)
 }
 
+/// The buddy window's size in physical pixels. Computed instead of asked:
+/// a window that hasn't been shown yet may report a size of zero.
+fn buddy_size(scale: f64, scale_factor: f64) -> PhysicalSize<i32> {
+    LogicalSize::new(BUDDY_W * scale, BUDDY_H * scale).to_physical(scale_factor)
+}
+
 /// Bottom-right corner of the main screen, above the taskbar or Dock.
-fn default_position(window: &WebviewWindow) -> Option<PhysicalPosition<i32>> {
+fn default_position(window: &WebviewWindow, scale: f64) -> Option<PhysicalPosition<i32>> {
     let monitor = window
         .primary_monitor()
         .ok()
         .flatten()
         .or_else(|| window.current_monitor().ok().flatten())?;
     let area = monitor.work_area();
-    let size = window.outer_size().ok()?;
+    let size = buddy_size(scale, monitor.scale_factor());
     let margin = (16.0 * monitor.scale_factor()) as i32;
     Some(PhysicalPosition::new(
-        area.position.x + area.size.width as i32 - size.width as i32 - margin,
-        area.position.y + area.size.height as i32 - size.height as i32,
+        area.position.x + area.size.width as i32 - size.width - margin,
+        area.position.y + area.size.height as i32 - size.height,
     ))
 }
 
 /// Whether the window's centre would land on one of the connected screens
 /// (a screen may have been unplugged since the position was saved).
-fn is_on_screen(window: &WebviewWindow, position: PhysicalPosition<i32>) -> bool {
-    let Ok(size) = window.outer_size() else {
-        return false;
-    };
-    let cx = position.x + size.width as i32 / 2;
-    let cy = position.y + size.height as i32 / 2;
+fn is_on_screen(window: &WebviewWindow, position: PhysicalPosition<i32>, scale: f64) -> bool {
+    let size = buddy_size(scale, window.scale_factor().unwrap_or(1.0));
+    let cx = position.x + size.width / 2;
+    let cy = position.y + size.height / 2;
     window
         .available_monitors()
         .map(|monitors| {
@@ -348,8 +352,9 @@ fn resize_buddy(window: &WebviewWindow, scale: f64) {
 }
 
 fn reset_position(app: &AppHandle) {
+    let scale = store(app).settings.scale;
     if let Some(window) = app.get_webview_window(BUDDY) {
-        if let Some(position) = default_position(&window) {
+        if let Some(position) = default_position(&window, scale) {
             let _ = window.set_position(position);
         }
     }
@@ -427,7 +432,9 @@ fn build_menu(app: &AppHandle, s: &Settings, kind: MenuKind) -> tauri::Result<Me
         .checked(s.always_on_top)
         .build(app)?;
 
-    let mut menu = MenuBuilder::new(app).text("settings", "Instellingen…").separator();
+    let mut menu = MenuBuilder::new(app)
+        .text("settings", "Instellingen…")
+        .separator();
     if kind == MenuKind::Tray {
         menu = menu.item(&visible);
     }
@@ -467,7 +474,10 @@ fn create_tray(app: &AppHandle, settings: &Settings) -> tauri::Result<()> {
         true,
     );
     #[cfg(not(target_os = "macos"))]
-    let (icon, template) = (Image::from_bytes(include_bytes!("../icons/tray.png"))?, false);
+    let (icon, template) = (
+        Image::from_bytes(include_bytes!("../icons/tray.png"))?,
+        false,
+    );
 
     TrayIconBuilder::with_id(TRAY_ID)
         .icon(icon)

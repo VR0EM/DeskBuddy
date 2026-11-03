@@ -12,6 +12,9 @@
   .cell .stage { width: 240px; height: 200px; }
   .cell p { margin: 2px 8px 6px; font-size: 13px; color: #6b5b66; }
   .dark { background: #2a2733; }
+  body.hero { background: #fbf6f1; margin: 0; padding: 18px 22px 8px; }
+  body.hero .cell { background: transparent; }
+  body.hero .cell p { text-align: center; font-weight: 800; font-size: 15px; color: #3a2a35; margin-top: -4px; }
 </style>
 </head>
 <body>
@@ -37,6 +40,11 @@
   if (mode === 'eyes') EYES.forEach((e) => MOUTHS.forEach((m) => add({ ...base('pinda'), eyes: e.id, mouth: m.id }, `${e.name} + ${m.name}`)));
   if (mode === 'frog') HATS.forEach((h) => add({ ...base('flip'), hat: h.id }, h.name));
   if (mode === 'sleep') PRESETS.forEach((p) => add(p, p.name, 'sleep'));
+  if (mode === 'hero') {
+    const poses = ['l-down', 'r-mouse', '', 'fast r-down', 'l-down r-down', 'r-down', 'sleep', 'l-down', 'fast l-down', 'blink'];
+    PRESETS.forEach((p, i) => add(p, p.name, poses[i]));
+    document.body.classList.add('hero');
+  }
   if (mode === 'allposes') PRESETS.forEach((p) => add(p, p.name + ' tik', 'l-down r-mouse fast'));
   const grid = document.getElementById('grid');
   if (q.get('cols')) grid.style.setProperty('--cols', q.get('cols'));
