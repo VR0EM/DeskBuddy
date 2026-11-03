@@ -102,6 +102,11 @@ Start-Sleep -Seconds 3
 '--- now typing into Notepad'
 Send-TestInput
 
+# After the hooks' 30-second re-arm, type once more.
+Start-Sleep -Seconds 16
+'--- typing again after the re-arm'
+Send-TestInput
+
 # Autosave runs every 15 seconds.
 Start-Sleep -Seconds 18
 Save-Screenshot 'smoke\windows-after.png'
