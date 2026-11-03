@@ -553,7 +553,8 @@ function paws(art, c, mouseSide) {
 }
 
 function effects(mouseSide) {
-  const dash = (d) => strokeLine(d, INK, 2.2, { opacity: 0.5 });
+  // A light halo under each mark keeps it visible on dark wallpapers too.
+  const dash = (d) => strokeLine(d, '#ffffff', 5, { opacity: 0.7 }) + strokeLine(d, INK, 2.2, { opacity: 0.55 });
   const burst = (x, y, s) => dash(`M${x - 5 * s} ${y - 6} L${x - 9 * s} ${y - 11}`) + dash(`M${x - 7 * s} ${y} L${x - 13 * s} ${y - 1}`) + dash(`M${x - 5 * s} ${y + 6} L${x - 9 * s} ${y + 10}`);
   const zx = mouseSide === 'left' ? 52 : 188;
   const dir = mouseSide === 'left' ? -1 : 1;

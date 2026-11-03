@@ -59,7 +59,11 @@
 .buddy-svg .z {
   font-family: 'Nunito', ui-rounded, system-ui, sans-serif;
   font-weight: 800;
-  opacity: 0.7;
+  opacity: 0.75;
+  stroke: #ffffff;
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
 }
 .sleep .buddy-svg .z1 { animation: z1 3s steps(1, end) infinite; }
 .sleep .buddy-svg .z2 { animation: z2 3s steps(1, end) infinite; }
@@ -172,7 +176,8 @@
   right: 3%;
   top: 0;
   color: #3a2a35;
-  opacity: 0.7;
+  opacity: 0.75;
+  text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff;
   font: 800 16px/1 'Nunito', ui-rounded, system-ui, sans-serif;
   font-size: 7cqw;
 }

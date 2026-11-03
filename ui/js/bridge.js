@@ -24,7 +24,12 @@ export function startDragging() {
 const preview = (() => {
   if (inApp) return null;
   const KEY = 'deskbuddy-preview';
-  const channel = 'BroadcastChannel' in window ? new BroadcastChannel(KEY) : null;
+  let channel = null;
+  try {
+    channel = new BroadcastChannel(KEY);
+  } catch {
+    // Not available here: tabs just won't sync.
+  }
   const handlers = new Map();
   const defaults = {
     settings: {

@@ -117,7 +117,15 @@ function showTab(name) {
   $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === name));
   if (name === 'verzameling') renderCollection();
   $('#main').scrollTop = 0;
-  history.replaceState(null, '', `#${name}`);
+  rememberTab(name);
+}
+
+function rememberTab(name) {
+  try {
+    history.replaceState(null, '', `#${name}`);
+  } catch {
+    // Some embedded pages may not change their address.
+  }
 }
 
 // ---------------------------------------------------------------- my buddy
@@ -215,7 +223,7 @@ function startMaker({ mode = 'drawn', buddy = null } = {}) {
   });
   $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === 'maken'));
   $('#main').scrollTop = 0;
-  history.replaceState(null, '', '#maken');
+  rememberTab('maken');
 }
 
 function renderMaker() {
