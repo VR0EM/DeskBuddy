@@ -125,6 +125,15 @@ Kopieer dat mapje als je je tellers wilt bewaren of meenemen naar een andere com
 - De buddy tekent alleen iets nieuws als er iets verandert. Zet **Levendig** uit en hij beweegt
   helemaal alleen nog als jij iets doet.
 
+## Problemen?
+
+- **Mac: hij tikt niet mee als ik typ.** Zet DeskBuddy aan bij *Systeeminstellingen › Privacy en beveiliging ›
+  Invoermonitoring* en start hem opnieuw. Staat hij er al aan (bijvoorbeeld na een nieuwe versie)? Zet hem uit en weer aan.
+- **Windows: hij tikt niet mee in één bepaald programma.** Programma's die als administrator draaien,
+  schermt Windows af. In die vensters ziet DeskBuddy je toetsen niet.
+- **Buddy kwijt?** Kies *Terug naar de hoek* in het menu bij het pootje (menubalk of systeemvak).
+- **Hij staat in de weg bij klikken?** Zet *Spookmodus* aan.
+
 ## Zelf bouwen
 
 Voor wie zelf aan DeskBuddy wil sleutelen. Je hebt nodig:
@@ -153,6 +162,15 @@ npm run preview
 ```
 
 en open dan http://localhost:5173. Toetsen en klikken in dat tabblad tellen dan als tikjes.
+
+Wil je zien wat de toetsenbord-luisteraar precies oppikt? In de map `src-tauri`:
+
+```bash
+cargo run -p deskbuddy-input --example listen
+```
+
+Druk dan wat toetsen in en klik een paar keer. Met de omgevingsvariabele `DESKBUDDY_DEBUG=1`
+vertelt de app zelf in de terminal wat hij ziet.
 
 ### Hoe het in elkaar zit
 
