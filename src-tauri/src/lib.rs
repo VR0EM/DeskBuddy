@@ -516,6 +516,12 @@ fn refresh_tray(app: &AppHandle, settings: &Settings) {
 
 // ---------------------------------------------------------------- input & saving
 
+/// DESKBUDDY_DEBUG=1 makes DeskBuddy log what its input listener is doing.
+fn debug() -> bool {
+    static DEBUG: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *DEBUG.get_or_init(|| std::env::var_os("DESKBUDDY_DEBUG").is_some())
+}
+
 fn start_input(app: AppHandle) {
     let (tx, rx) = std::sync::mpsc::channel();
     if let Err(e) = deskbuddy_input::start(tx) {
@@ -523,6 +529,21 @@ fn start_input(app: AppHandle) {
         return;
     }
     eprintln!("[deskbuddy] listening: {}", deskbuddy_input::diagnostics());
+    if debug() {
+        // Separate from everything else, so it keeps talking even if
+        // another part of the app gets stuck.
+        let started = std::time::Instant::now();
+        let _ = std::thread::Builder::new()
+            .name("deskbuddy-debug".into())
+            .spawn(move || loop {
+                std::thread::sleep(Duration::from_secs(5));
+                eprintln!(
+                    "[deskbuddy] {:>3}s input: {}",
+                    started.elapsed().as_secs(),
+                    deskbuddy_input::diagnostics()
+                );
+            });
+    }
     let spawned = std::thread::Builder::new()
         .name("deskbuddy-taps".into())
         .spawn(move || {
@@ -537,6 +558,9 @@ fn start_input(app: AppHandle) {
                     InputEvent::Mouse(InputButton::Other) => ("mouse", "other"),
                 };
                 let (total, today) = store(&app).record(kind == "key");
+                if debug() {
+                    eprintln!("[deskbuddy] tap {kind} {side}, total {total}");
+                }
                 let _ = app.emit(
                     "tap",
                     Tap {
@@ -554,16 +578,14 @@ fn start_input(app: AppHandle) {
 }
 
 /// Saves counts every few seconds instead of on every tap.
-/// With DESKBUDDY_DEBUG set, it also logs how the input listener is doing.
 fn start_autosave(app: AppHandle) {
-    let debug = std::env::var_os("DESKBUDDY_DEBUG").is_some();
     let spawned = std::thread::Builder::new()
         .name("deskbuddy-autosave".into())
         .spawn(move || loop {
             std::thread::sleep(Duration::from_secs(15));
             store(&app).flush();
-            if debug {
-                eprintln!("[deskbuddy] input: {}", deskbuddy_input::diagnostics());
+            if debug() {
+                eprintln!("[deskbuddy] saved");
             }
         });
     if let Err(e) = spawned {
