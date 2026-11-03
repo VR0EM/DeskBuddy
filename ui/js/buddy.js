@@ -9,7 +9,7 @@ import { BuddyStage } from './stage.js';
 const sceneEl = document.getElementById('scene');
 const counterEl = document.getElementById('counter');
 const bubbleEl = document.getElementById('bubble');
-const number = new Intl.NumberFormat('nl-NL');
+const number = new Intl.NumberFormat('en-US');
 
 let settings;
 let buddies = [];
@@ -26,6 +26,7 @@ function applySettings() {
   stage.setOptions({ lively: settings.lively, sleepMinutes: settings.sleepMinutes });
   sceneEl.style.opacity = String(settings.opacity);
   counterEl.hidden = !settings.showCounter;
+  document.body.classList.toggle('pixel', Boolean(settings.pixel));
 }
 
 let countFrame = 0;
@@ -40,7 +41,7 @@ function showCount() {
 function celebrate(item) {
   bubbleEl.replaceChildren();
   const title = document.createElement('b');
-  title.textContent = 'Nieuw verdiend!';
+  title.textContent = 'Just earned!';
   bubbleEl.append(title, item.name);
   bubbleEl.hidden = false;
   bubbleEl.classList.remove('pop');

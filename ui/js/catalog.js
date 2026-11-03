@@ -2,85 +2,87 @@
 // `unlock` is the number of taps (keys + clicks) needed to earn an item.
 
 export const SPECIES = [
-  { id: 'kat', name: 'Kat', eyes: 'rond', mouth: 'kat',
+  { id: 'cat', name: 'Cat', eyes: 'round', mouth: 'cat',
     colors: { body: '#f7b46e', accent: '#ffe4c8', paw: '#fff3e4', cheek: '#ff8f8f' } },
-  { id: 'konijn', name: 'Konijn', eyes: 'rond', mouth: 'tandjes',
+  { id: 'bunny', name: 'Bunny', eyes: 'round', mouth: 'teeth',
     colors: { body: '#fbf3ea', accent: '#ffc3d3', paw: '#fbf3ea', cheek: '#ff9db5' } },
-  { id: 'beer', name: 'Beer', eyes: 'rond', mouth: 'lach',
+  { id: 'bear', name: 'Bear', eyes: 'round', mouth: 'smile',
     colors: { body: '#c4946f', accent: '#f1dcc5', paw: '#c4946f', cheek: '#ff9b8f' } },
-  { id: 'kikker', name: 'Kikker', eyes: 'rond', mouth: 'breed',
+  { id: 'frog', name: 'Frog', eyes: 'round', mouth: 'grin',
     colors: { body: '#93d38c', accent: '#e9f7cb', paw: '#93d38c', cheek: '#ff9db0' } },
-  { id: 'pinguin', name: 'Pinguïn', eyes: 'rond', mouth: 'snavel',
+  { id: 'penguin', name: 'Penguin', eyes: 'round', mouth: 'beak',
     colors: { body: '#4a5677', accent: '#ffffff', paw: '#4a5677', cheek: '#ffa3b8' } },
-  { id: 'vos', name: 'Vos', eyes: 'rond', mouth: 'kat',
+  { id: 'fox', name: 'Fox', eyes: 'round', mouth: 'cat',
     colors: { body: '#f39150', accent: '#fff5ec', paw: '#6e4637', cheek: '#ff9b8f' } },
-  { id: 'panda', name: 'Panda', eyes: 'rond', mouth: 'lach',
+  { id: 'redpanda', name: 'Red panda', eyes: 'round', mouth: 'cat',
+    colors: { body: '#c95a2e', accent: '#fff6ee', paw: '#4a2c26', cheek: '#ff9b8f' } },
+  { id: 'panda', name: 'Panda', eyes: 'round', mouth: 'smile',
     colors: { body: '#fbfbfb', accent: '#35343f', paw: '#35343f', cheek: '#ffa3b8' } },
-  { id: 'hamster', name: 'Hamster', eyes: 'rond', mouth: 'kat',
+  { id: 'hamster', name: 'Hamster', eyes: 'round', mouth: 'cat',
     colors: { body: '#f4c38e', accent: '#fff8ef', paw: '#fde7ce', cheek: '#ff9b9b' } },
-  { id: 'hond', name: 'Puppy', eyes: 'rond', mouth: 'tong',
+  { id: 'puppy', name: 'Puppy', eyes: 'round', mouth: 'tongue',
     colors: { body: '#f0d4b0', accent: '#b5805b', paw: '#f0d4b0', cheek: '#ff9b8f' } },
-  { id: 'wolk', name: 'Wolkje', eyes: 'rond', mouth: 'lach',
+  { id: 'cloud', name: 'Cloud', eyes: 'round', mouth: 'smile',
     colors: { body: '#f6f9ff', accent: '#d3e2ff', paw: '#f6f9ff', cheek: '#ffb0c4' } },
 ];
 
 export const EYES = [
-  { id: 'rond', name: 'Rond' },
-  { id: 'groot', name: 'Glinster' },
-  { id: 'blij', name: 'Blij' },
-  { id: 'puntjes', name: 'Puntjes' },
+  { id: 'round', name: 'Round' },
+  { id: 'sparkle', name: 'Sparkly' },
+  { id: 'happy', name: 'Happy' },
+  { id: 'dots', name: 'Dots' },
 ];
 
 export const MOUTHS = [
-  { id: 'kat', name: 'Snoetje' },
-  { id: 'lach', name: 'Lachje' },
-  { id: 'breed', name: 'Grote lach' },
-  { id: 'tandjes', name: 'Tandjes' },
-  { id: 'tong', name: 'Tongetje' },
-  { id: 'snavel', name: 'Snaveltje' },
+  { id: 'cat', name: 'Kitty' },
+  { id: 'smile', name: 'Smile' },
+  { id: 'grin', name: 'Big grin' },
+  { id: 'teeth', name: 'Teeth' },
+  { id: 'tongue', name: 'Tongue' },
+  { id: 'beak', name: 'Beak' },
 ];
 
 export const HATS = [
-  { id: 'geen', name: 'Niets', unlock: 0 },
-  { id: 'strik', name: 'Strikje', unlock: 0 },
-  { id: 'bloem', name: 'Bloemetje', unlock: 0 },
-  { id: 'muts', name: 'Muts', unlock: 0 },
-  { id: 'feesthoed', name: 'Feesthoedje', unlock: 1000 },
-  { id: 'koptelefoon', name: 'Koptelefoon', unlock: 5000 },
-  { id: 'propeller', name: 'Propellerpet', unlock: 25000 },
-  { id: 'kroon', name: 'Kroontje', unlock: 100000 },
-  { id: 'tovenaar', name: 'Tovenaarshoed', unlock: 250000 },
-  { id: 'aureool', name: 'Aureool', unlock: 750000 },
+  { id: 'none', name: 'Nothing', unlock: 0 },
+  { id: 'bow', name: 'Bow', unlock: 0 },
+  { id: 'flower', name: 'Flower', unlock: 0 },
+  { id: 'beanie', name: 'Beanie', unlock: 0 },
+  { id: 'party', name: 'Party hat', unlock: 100 },
+  { id: 'headphones', name: 'Headphones', unlock: 500 },
+  { id: 'propeller', name: 'Propeller cap', unlock: 2500 },
+  { id: 'crown', name: 'Crown', unlock: 10000 },
+  { id: 'wizard', name: 'Wizard hat', unlock: 25000 },
+  { id: 'halo', name: 'Halo', unlock: 75000 },
 ];
 
 export const FACES = [
-  { id: 'geen', name: 'Niets', unlock: 0 },
-  { id: 'hartjes', name: 'Hartjesbril', unlock: 2500 },
-  { id: 'bril', name: 'Ronde bril', unlock: 10000 },
-  { id: 'zonnebril', name: 'Zonnebril', unlock: 50000 },
+  { id: 'none', name: 'Nothing', unlock: 0 },
+  { id: 'hearts', name: 'Heart glasses', unlock: 250 },
+  { id: 'glasses', name: 'Round glasses', unlock: 1000 },
+  { id: 'sunglasses', name: 'Sunglasses', unlock: 5000 },
 ];
 
 export const KEYBOARDS = [
-  { id: 'wolk', name: 'Wolkwit', unlock: 0, base: '#ffffff', keys: '#eef1f8', edge: '#cdd3e4', lit: '#ffc2d2' },
-  { id: 'roze', name: 'Roze', unlock: 0, base: '#ffd7e4', keys: '#fff1f6', edge: '#efb1c6', lit: '#ff8fb3' },
+  { id: 'cloud', name: 'Cloud white', unlock: 0, base: '#ffffff', keys: '#eef1f8', edge: '#cdd3e4', lit: '#ffc2d2' },
+  { id: 'pink', name: 'Pink', unlock: 0, base: '#ffd7e4', keys: '#fff1f6', edge: '#efb1c6', lit: '#ff8fb3' },
   { id: 'mint', name: 'Mint', unlock: 0, base: '#c7f0e0', keys: '#effcf6', edge: '#9ed9c2', lit: '#5fcfa6' },
-  { id: 'lavendel', name: 'Lavendel', unlock: 0, base: '#e2d9ff', keys: '#f6f2ff', edge: '#bfb0ef', lit: '#a58cff' },
-  { id: 'nacht', name: 'Nacht', unlock: 0, base: '#3c4059', keys: '#585e80', edge: '#2a2d40', lit: '#9fd3ff' },
-  { id: 'regenboog', name: 'Regenboog', unlock: 500000, base: '#ffffff', keys: '#eef1f8', edge: '#cdd3e4', lit: '#ffffff', rainbow: true },
-  { id: 'goud', name: 'Goud', unlock: 1000000, base: '#ffd86b', keys: '#fff3c4', edge: '#d9a62e', lit: '#ffffff' },
+  { id: 'lavender', name: 'Lavender', unlock: 0, base: '#e2d9ff', keys: '#f6f2ff', edge: '#bfb0ef', lit: '#a58cff' },
+  { id: 'night', name: 'Night', unlock: 0, base: '#3c4059', keys: '#585e80', edge: '#2a2d40', lit: '#9fd3ff' },
+  { id: 'rainbow', name: 'Rainbow', unlock: 50000, base: '#ffffff', keys: '#eef1f8', edge: '#cdd3e4', lit: '#ffffff', rainbow: true },
+  { id: 'gold', name: 'Gold', unlock: 100000, base: '#ffd86b', keys: '#fff3c4', edge: '#d9a62e', lit: '#ffffff' },
 ];
 
 /** Every item you can earn, from the first to the last. */
 export const UNLOCKS = [
-  ...HATS.map((item) => ({ ...item, slot: 'hat', slotName: 'Hoofddeksel' })),
-  ...FACES.map((item) => ({ ...item, slot: 'face', slotName: 'Bril' })),
-  ...KEYBOARDS.map((item) => ({ ...item, slot: 'keyboard', slotName: 'Toetsenbord' })),
+  ...HATS.map((item) => ({ ...item, slot: 'hat', slotName: 'Hat' })),
+  ...FACES.map((item) => ({ ...item, slot: 'face', slotName: 'Glasses' })),
+  ...KEYBOARDS.map((item) => ({ ...item, slot: 'keyboard', slotName: 'Keyboard' })),
 ]
   .filter((item) => item.unlock > 0)
   .sort((a, b) => a.unlock - b.unlock);
 
 export const PALETTE = [
-  '#fbf3ea', '#f6f9ff', '#ffe4c8', '#f7b46e', '#f39150', '#c4946f', '#8a6450',
+  '#fbf3ea', '#f6f9ff', '#ffe4c8', '#f7b46e', '#f39150', '#c95a2e', '#c4946f', '#8a6450',
   '#ffc3d3', '#ff9db5', '#e2d9ff', '#b9a6ff', '#cfe8ff', '#8ec5ff', '#93d38c',
   '#c7f0e0', '#fff1a8', '#4a5677', '#35343f', '#9aa0b5', '#fbfbfb',
 ];
@@ -94,23 +96,24 @@ const preset = (id, name, species, extra = {}) => {
     colors: { ...s.colors, ...(extra.colors || {}) },
     eyes: extra.eyes || s.eyes,
     mouth: extra.mouth || s.mouth,
-    hat: extra.hat || 'geen',
-    face: 'geen',
-    keyboard: extra.keyboard || 'wolk',
+    hat: extra.hat || 'none',
+    face: 'none',
+    keyboard: extra.keyboard || 'cloud',
   };
 };
 
 export const PRESETS = [
-  preset('pip', 'Pip', 'kat'),
-  preset('mochi', 'Mochi', 'konijn', { hat: 'strik', keyboard: 'roze' }),
-  preset('bruno', 'Bruno', 'beer', { keyboard: 'mint' }),
-  preset('flip', 'Flip', 'kikker', { hat: 'bloem', keyboard: 'mint' }),
-  preset('ijsje', 'IJsje', 'pinguin', { hat: 'muts', keyboard: 'lavendel' }),
-  preset('vonk', 'Vonk', 'vos', { keyboard: 'wolk' }),
-  preset('bamboe', 'Bamboe', 'panda', { keyboard: 'mint' }),
-  preset('pinda', 'Pinda', 'hamster', { keyboard: 'roze' }),
-  preset('koekje', 'Koekje', 'hond', { keyboard: 'wolk' }),
-  preset('wolkje', 'Wolkje', 'wolk', { eyes: 'blij', keyboard: 'lavendel' }),
+  preset('pip', 'Pip', 'cat'),
+  preset('mochi', 'Mochi', 'bunny', { hat: 'bow', keyboard: 'pink' }),
+  preset('bruno', 'Bruno', 'bear', { keyboard: 'mint' }),
+  preset('flip', 'Flip', 'frog', { hat: 'flower', keyboard: 'mint' }),
+  preset('frost', 'Frost', 'penguin', { hat: 'beanie', keyboard: 'lavender' }),
+  preset('ember', 'Ember', 'fox'),
+  preset('maple', 'Maple', 'redpanda', { keyboard: 'night' }),
+  preset('bamboo', 'Bamboo', 'panda', { keyboard: 'mint' }),
+  preset('peanut', 'Peanut', 'hamster', { keyboard: 'pink' }),
+  preset('cookie', 'Cookie', 'puppy'),
+  preset('puff', 'Puff', 'cloud', { eyes: 'happy', keyboard: 'lavender' }),
 ];
 
 export const speciesById = (id) => SPECIES.find((s) => s.id === id) || SPECIES[0];
@@ -125,26 +128,39 @@ export function nextUnlock(total) {
   return UNLOCKS.find((item) => item.unlock > total) || null;
 }
 
+/** Names used by version 1.0.0 (which was in Dutch), so saved buddies keep working. */
+const OLD_NAMES = {
+  species: { kat: 'cat', konijn: 'bunny', beer: 'bear', kikker: 'frog', pinguin: 'penguin', vos: 'fox', hond: 'puppy', wolk: 'cloud' },
+  eyes: { rond: 'round', groot: 'sparkle', blij: 'happy', puntjes: 'dots' },
+  mouth: { kat: 'cat', lach: 'smile', breed: 'grin', tandjes: 'teeth', tong: 'tongue', snavel: 'beak' },
+  hat: { geen: 'none', strik: 'bow', bloem: 'flower', muts: 'beanie', feesthoed: 'party', koptelefoon: 'headphones', kroon: 'crown', tovenaar: 'wizard', aureool: 'halo' },
+  face: { geen: 'none', hartjes: 'hearts', bril: 'glasses', zonnebril: 'sunglasses' },
+  keyboard: { wolk: 'cloud', roze: 'pink', lavendel: 'lavender', nacht: 'night', regenboog: 'rainbow', goud: 'gold' },
+  preset: { ijsje: 'frost', vonk: 'ember', bamboe: 'bamboo', pinda: 'peanut', koekje: 'cookie', wolkje: 'puff' },
+};
+const renamed = (kind, id) => OLD_NAMES[kind][id] || id;
+
 /** Turns a stored buddy (maybe from an older version) into a complete one. */
 export function normalizeBuddy(def) {
   if (!def || typeof def !== 'object') return PRESETS[0];
   if (def.kind === 'image') return def;
-  const s = speciesById(def.species);
+  const s = speciesById(renamed('species', def.species));
   return {
     ...def,
     kind: 'drawn',
     species: s.id,
     colors: { ...s.colors, ...(def.colors || {}) },
-    eyes: def.eyes || s.eyes,
-    mouth: def.mouth || s.mouth,
-    hat: def.hat || 'geen',
-    face: def.face || 'geen',
-    keyboard: def.keyboard || 'wolk',
+    eyes: renamed('eyes', def.eyes || s.eyes),
+    mouth: renamed('mouth', def.mouth || s.mouth),
+    hat: renamed('hat', def.hat || 'none'),
+    face: renamed('face', def.face || 'none'),
+    keyboard: renamed('keyboard', def.keyboard || 'cloud'),
   };
 }
 
 /** Looks up the active buddy among the presets and the custom buddies. */
 export function findBuddy(id, customBuddies = []) {
-  const found = customBuddies.find((b) => b && b.id === id) || PRESETS.find((b) => b.id === id);
+  const wanted = renamed('preset', id);
+  const found = customBuddies.find((b) => b && b.id === wanted) || PRESETS.find((b) => b.id === wanted);
   return normalizeBuddy(found || PRESETS[0]);
 }

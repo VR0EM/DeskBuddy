@@ -25,6 +25,8 @@ pub struct Settings {
     pub show_counter: bool,
     /// Idle animations (breathing, ear twitches). Off saves a little energy.
     pub lively: bool,
+    /// Draw everything in chunky pixels.
+    pub pixel: bool,
     /// Fall asleep after this many idle minutes; 0 = never.
     pub sleep_minutes: u32,
     /// "left" or "right": which paw goes to the mouse.
@@ -46,6 +48,7 @@ impl Default for Settings {
             click_through: false,
             show_counter: true,
             lively: true,
+            pixel: false,
             sleep_minutes: 5,
             mouse_side: "right".into(),
             hidden: false,

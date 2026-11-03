@@ -65,7 +65,7 @@ const FACE = { eyeY: 98, eyeDX: 20, cheekY: 112, cheekDX: 33, noseY: 103.5, mout
 
 /** Each species returns the pieces of its head and face. */
 const SPECIES_ART = {
-  kat(c) {
+  cat(c) {
     const ear = 'M66 80 L70 35 Q71 26 79 30 L109 49 Z';
     const inner = 'M76 68 L77 41 Q78 36 83 39 L99 50 Z';
     const tail = strokeLine('M66 152 C40 150 28 128 36 108 C40 98 49 96 51 104', outline(c.body), 11)
@@ -86,7 +86,7 @@ const SPECIES_ART = {
     };
   },
 
-  konijn(c) {
+  bunny(c) {
     const ear = ['ellipse', { cx: 99, cy: 28, rx: 12.5, ry: 27.5, transform: 'rotate(-11 99 54)', class: 'ear-l' }];
     const earR = ['ellipse', { cx: 141, cy: 28, rx: 12.5, ry: 27.5, transform: 'rotate(11 141 54)', class: 'ear-r' }];
     return {
@@ -100,7 +100,7 @@ const SPECIES_ART = {
     };
   },
 
-  beer(c) {
+  bear(c) {
     const ear = ['circle', { cx: 73, cy: 59, r: 16, class: 'ear-l' }];
     const earR = ['circle', { cx: 167, cy: 59, r: 16, class: 'ear-r' }];
     return {
@@ -116,7 +116,7 @@ const SPECIES_ART = {
     };
   },
 
-  kikker(c) {
+  frog(c) {
     const body = 'M55 164 C48 136 49 104 68 86 C84 72 102 68 120 68 C138 68 156 72 172 86 C191 104 192 136 185 164 Z';
     return {
       head: [['path', { d: body }], ['circle', { cx: 95, cy: 67, r: 19 }], ['circle', { cx: 145, cy: 67, r: 19 }]],
@@ -126,12 +126,12 @@ const SPECIES_ART = {
         el('circle', { cx: 124, cy: 90, r: 1.4, fill: darker(c.body, 0.45) }),
       face: { eyeY: 66, eyeDX: 25, cheekY: 99, cheekDX: 42, mouthY: 97, noseY: 0 },
       headTop: 50,
-      hatShift: { muts: -27, propeller: -20, feesthoed: -14, kroon: -12, tovenaar: -16, aureool: -10 },
+      hatShift: { beanie: -27, propeller: -20, party: -14, crown: -12, wizard: -16, halo: -10 },
       paw: 'frog',
     };
   },
 
-  pinguin(c) {
+  penguin(c) {
     return {
       head: [['path', { d: DOME }]],
       details:
@@ -147,7 +147,7 @@ const SPECIES_ART = {
     };
   },
 
-  vos(c) {
+  fox(c) {
     const ear = 'M60 94 L58 26 Q58 16 67 20 L110 48 Z';
     const inner = 'M70 76 L68 36 Q68 31 73 33 L98 50 Z';
     const tip = 'M58.6 44 L58 26 Q58 16 67 20 L83 30 Q70 33 58.6 44 Z';
@@ -167,6 +167,37 @@ const SPECIES_ART = {
       nose: INK,
       ear: [85, 74],
       tailBase: [70, 150],
+    };
+  },
+
+  redpanda(c) {
+    const ear = 'M62 86 C55 60 62 37 82 37 C95 37 104 45 108 52 Z';
+    const inner = 'M70 76 C66 59 71 46 83 45.5 C91 45.5 97 50 100 54 Z';
+    const m = `matrix(-1 0 0 1 ${VIEW_W} 0)`;
+    const dark = darker(c.body, 0.42);
+    const tailPath = 'M66 150 C42 150 28 132 32 110 C34 99 40 92 48 90';
+    const tail =
+      strokeLine(tailPath, outline(c.body), 17 + SW * 2) +
+      strokeLine(tailPath, c.body, 17) +
+      el('path', { d: tailPath, fill: 'none', stroke: dark, 'stroke-width': 17, 'stroke-dasharray': '9 9', 'stroke-dashoffset': 4 });
+    const tear = strokeLine('M101 104 Q102 113 109 119', dark, 4.5, { opacity: 0.8 });
+    return {
+      tail,
+      head: [['path', { d: DOME }], ['path', { d: ear, class: 'ear-l' }], ['path', { d: ear, class: 'ear-r', transform: m }]],
+      details:
+        part('path', { d: inner, fill: c.accent, class: 'ear-l' }) +
+        part('path', { d: inner, fill: c.accent, class: 'ear-r', transform: m }) +
+        el('ellipse', { cx: 75, cy: 108, rx: 15, ry: 13, fill: c.accent }) +
+        el('ellipse', { cx: 165, cy: 108, rx: 15, ry: 13, fill: c.accent }) +
+        el('ellipse', { cx: CX, cy: 112, rx: 17, ry: 12, fill: c.accent }) +
+        el('ellipse', { cx: 98, cy: 83, rx: 6.5, ry: 4.5, fill: c.accent }) +
+        el('ellipse', { cx: 142, cy: 83, rx: 6.5, ry: 4.5, fill: c.accent }) +
+        tear + mirror(tear),
+      nose: INK,
+      noseShape: 'oval',
+      face: { mouthY: 110, cheekDX: 36, cheekY: 116 },
+      ear: [84, 70],
+      tailBase: [66, 150],
     };
   },
 
@@ -204,7 +235,7 @@ const SPECIES_ART = {
     };
   },
 
-  hond(c) {
+  puppy(c) {
     const ear = 'M80 58 C62 56 50 72 52 98 C53 114 61 120 70 116 C80 111 84 92 90 70 Z';
     const m = `matrix(-1 0 0 1 ${VIEW_W} 0)`;
     const tail = strokeLine('M66 146 C50 142 44 128 50 116', outline(c.accent), 10, { class: 'tail-wag' })
@@ -226,7 +257,7 @@ const SPECIES_ART = {
     };
   },
 
-  wolk() {
+  cloud() {
     const base = 'M58 164 C52 134 55 110 70 99 L170 99 C185 110 188 134 182 164 Z';
     return {
       head: [
@@ -255,16 +286,16 @@ function eyes(style, f, ring) {
   const ringed = (r) => (ring ? pair((x) => el('circle', { cx: x, cy: y + 0.4, r, fill: ring })) : '');
   let open;
   switch (style) {
-    case 'groot':
+    case 'sparkle':
       open = ringed(8.9) + pair((x) =>
         el('ellipse', { cx: x, cy: y, rx: 7, ry: 7.8, fill: INK }) +
         el('circle', { cx: x + 2.4, cy: y - 2.8, r: 2.6, fill: '#fff' }) +
         el('circle', { cx: x - 2.2, cy: y + 2.6, r: 1.3, fill: '#fff' }));
       break;
-    case 'blij':
+    case 'happy':
       open = pair((x) => strokeLine(`M${x - 6} ${y + 2} Q${x} ${y - 6} ${x + 6} ${y + 2}`, INK, 2.8));
       break;
-    case 'puntjes':
+    case 'dots':
       open = ringed(5.1) + pair((x) => el('circle', { cx: x, cy: y, r: 3.9, fill: INK }) +
         el('circle', { cx: x + 1.2, cy: y - 1.4, r: 1.1, fill: '#fff' }));
       break;
@@ -285,40 +316,40 @@ function mouths(style, f, c) {
   const inside = '#8b3d4f';
   let normal;
   switch (style) {
-    case 'lach':
+    case 'smile':
       normal = strokeLine(`M113 ${y} Q120 ${y + 6.5} 127 ${y}`, INK, 2.3);
       break;
-    case 'breed':
+    case 'grin':
       normal = strokeLine(`M100 ${y} Q120 ${y + 13} 140 ${y}`, INK, 2.4);
       break;
-    case 'tandjes':
+    case 'teeth':
       normal =
         el('rect', { x: 116.3, y: y + 1, width: 3.5, height: 4.6, rx: 1, fill: '#fff', stroke: mix(INK, '#fff', 0.35), 'stroke-width': 1 }) +
         el('rect', { x: 120.2, y: y + 1, width: 3.5, height: 4.6, rx: 1, fill: '#fff', stroke: mix(INK, '#fff', 0.35), 'stroke-width': 1 }) +
         strokeLine(`M112.5 ${y} Q116.25 ${y + 4.2} 120 ${y} Q123.75 ${y + 4.2} 127.5 ${y}`, INK, 2.1);
       break;
-    case 'tong':
+    case 'tongue':
       normal =
         el('path', { d: `M116.2 ${y + 1.6} Q120 ${y + 11} 123.8 ${y + 1.6} Z`, fill: pink, stroke: darker(pink, 0.3), 'stroke-width': 1.2 }) +
         strokeLine(`M112 ${y} Q116 ${y + 4.4} 120 ${y} Q124 ${y + 4.4} 128 ${y}`, INK, 2.2);
       break;
-    case 'snavel':
+    case 'beak':
       normal = el('path', {
         d: `M112.5 ${y - 5} Q120 ${y - 9.5} 127.5 ${y - 5} Q122.5 ${y + 3} 120 ${y + 3.6} Q117.5 ${y + 3} 112.5 ${y - 5} Z`,
         fill: '#ffb547', stroke: '#d98a1f', 'stroke-width': 1.8, 'stroke-linejoin': 'round',
       });
       break;
-    default: // kat
+    default: // cat
       normal = strokeLine(`M112.5 ${y} Q116.25 ${y + 4.6} 120 ${y} Q123.75 ${y + 4.6} 127.5 ${y}`, INK, 2.2);
   }
   const excited =
-    style === 'snavel'
+    style === 'beak'
       ? el('path', { d: `M112.5 ${y - 6} Q120 ${y - 10} 127.5 ${y - 6} L120 ${y - 1} Z`, fill: '#ffb547', stroke: '#d98a1f', 'stroke-width': 1.8, 'stroke-linejoin': 'round' }) +
         el('path', { d: `M114 ${y + 0.5} L120 ${y - 1.5} L126 ${y + 0.5} Q120 ${y + 7} 114 ${y + 0.5} Z`, fill: '#ffb547', stroke: '#d98a1f', 'stroke-width': 1.8, 'stroke-linejoin': 'round' })
       : el('path', { d: `M114 ${y - 0.5} Q120 ${y - 2} 126 ${y - 0.5} Q125 ${y + 9} 120 ${y + 9} Q115 ${y + 9} 114 ${y - 0.5} Z`, fill: inside, stroke: INK, 'stroke-width': 1.8, 'stroke-linejoin': 'round' }) +
         el('ellipse', { cx: 120, cy: y + 6.4, rx: 3.6, ry: 2.2, fill: pink });
   const sleepy =
-    style === 'snavel'
+    style === 'beak'
       ? normal
       : el('ellipse', { cx: 120, cy: y + 1.5, rx: 2.4, ry: 2, fill: inside, stroke: INK, 'stroke-width': 1.4 });
   return el('g', { class: 'm-normal' }, normal) + el('g', { class: 'm-excited' }, excited) + el('g', { class: 'm-sleep' }, sleepy);
@@ -346,12 +377,12 @@ function hat(id, top, f, shift = {}) {
   const dy = top - 43 + (shift[id] || 0);
   const at = (svg) => el('g', { transform: `translate(0 ${dy})` }, svg);
   switch (id) {
-    case 'strik':
+    case 'bow':
       return at(el('g', { transform: 'rotate(18 150 54)' },
         shape('path', { d: 'M150 54 C139 42 130 49 134 58 C137 65 145 61 150 54 Z' }, '#ff6f9c') +
         shape('path', { d: 'M150 54 C161 42 170 49 166 58 C163 65 155 61 150 54 Z' }, '#ff6f9c') +
         shape('circle', { cx: 150, cy: 54, r: 4.2 }, '#ff8fb1')));
-    case 'bloem': {
+    case 'flower': {
       const petals = [0, 72, 144, 216, 288]
         .map((a) => {
           const r = (a * Math.PI) / 180;
@@ -360,7 +391,7 @@ function hat(id, top, f, shift = {}) {
         .join('');
       return at(petals + shape('circle', { cx: 90, cy: 52, r: 4.2 }, '#ffd447'));
     }
-    case 'muts':
+    case 'beanie':
       return at(
         shape('path', { d: 'M75 70 C75 40 96 25 120 25 C144 25 165 40 165 70 Z' }, '#ef7380') +
         strokeLine('M98 33 Q93 50 94 66', darker('#ef7380', 0.18), 2.2, { opacity: 0.6 }) +
@@ -368,7 +399,7 @@ function hat(id, top, f, shift = {}) {
         strokeLine('M142 33 Q147 50 146 66', darker('#ef7380', 0.18), 2.2, { opacity: 0.6 }) +
         shape('rect', { x: 71, y: 60, width: 98, height: 15, rx: 7.5 }, '#f7a8b0') +
         shape('circle', { cx: 120, cy: 22, r: 9.5 }, '#fff6f0'));
-    case 'feesthoed':
+    case 'party':
       return at(el('g', { transform: 'rotate(-12 120 50)' },
         shape('path', { d: 'M103 51 L119 8 L137 51 Q120 57 103 51 Z' }, '#7ccafe') +
         el('circle', { cx: 113, cy: 40, r: 2.8, fill: '#ffe27a' }) +
@@ -376,7 +407,7 @@ function hat(id, top, f, shift = {}) {
         el('circle', { cx: 127, cy: 45, r: 2.6, fill: '#fff' }) +
         el('circle', { cx: 117, cy: 22, r: 2.1, fill: '#fff' }) +
         shape('circle', { cx: 119, cy: 8, r: 5.4 }, '#ff7aa8')));
-    case 'koptelefoon': {
+    case 'headphones': {
       const y = f.eyeY;
       const band = `M60 ${y + 2} C56 ${y - 64} 184 ${y - 64} 180 ${y + 2}`;
       return strokeLine(band, outline('#6d79e0'), 9) + strokeLine(band, '#6d79e0', 9 - SW * 2) +
@@ -397,7 +428,7 @@ function hat(id, top, f, shift = {}) {
           shape('ellipse', { cx: 108, cy: 19, rx: 11.5, ry: 3.4 }, '#ff6b81') +
           shape('ellipse', { cx: 132, cy: 19, rx: 11.5, ry: 3.4 }, '#4fc3f7')) +
         shape('circle', { cx: 120, cy: 19, r: 2.8 }, '#ffffff'));
-    case 'kroon':
+    case 'crown':
       return at(
         shape('path', { d: 'M100 48 L101 23 L111 34 L120 17 L129 34 L139 23 L140 48 Z' }, '#ffd04d') +
         el('rect', { x: 100, y: 41, width: 40, height: 6, fill: '#ffbf2e' }) +
@@ -405,7 +436,7 @@ function hat(id, top, f, shift = {}) {
         el('circle', { cx: 108.5, cy: 39, r: 2.3, fill: '#5ec8ff' }) +
         el('circle', { cx: 131.5, cy: 39, r: 2.3, fill: '#5ec8ff' }) +
         el('path', { d: 'M100 48 L101 23 L111 34 L120 17 L129 34 L139 23 L140 48 Z', fill: 'none', stroke: outline('#ffd04d'), 'stroke-width': SW, 'stroke-linejoin': 'round' }));
-    case 'tovenaar': {
+    case 'wizard': {
       const star = (x, y, s) => el('path', { d: `M${x} ${y - s} Q${x + s * 0.25} ${y - s * 0.25} ${x + s} ${y} Q${x + s * 0.25} ${y + s * 0.25} ${x} ${y + s} Q${x - s * 0.25} ${y + s * 0.25} ${x - s} ${y} Q${x - s * 0.25} ${y - s * 0.25} ${x} ${y - s} Z`, fill: '#ffe27a' });
       return at(
         shape('path', { d: 'M92 50 C102 34 108 14 138 2 C129 16 135 32 150 50 Z' }, '#6a58c7') +
@@ -413,7 +444,7 @@ function hat(id, top, f, shift = {}) {
         shape('ellipse', { cx: 121, cy: 51, rx: 41, ry: 8.5 }, '#53449f') +
         shape('circle', { cx: 138, cy: 3, r: 3.6 }, '#ffe27a'));
     }
-    case 'aureool':
+    case 'halo':
       return at(
         el('ellipse', { cx: 120, cy: 21, rx: 27, ry: 7.5, fill: 'none', stroke: '#ffe680', 'stroke-width': 10, opacity: 0.35 }) +
         el('ellipse', { cx: 120, cy: 21, rx: 27, ry: 7.5, fill: 'none', stroke: '#ffd13b', 'stroke-width': 4.5 }));
@@ -428,19 +459,19 @@ function glasses(id, f) {
   const y = f.eyeY;
   const gap = f.eyeDX * 2;
   switch (id) {
-    case 'bril':
+    case 'glasses':
       return [lx, rx].map((x) => el('circle', { cx: x, cy: y, r: 11, fill: '#ffffff', 'fill-opacity': 0.18, stroke: '#7a5546', 'stroke-width': 2.6 })).join('') +
         strokeLine(`M${lx + 11} ${y - 1} Q${CX} ${y - 6} ${rx - 11} ${y - 1}`, '#7a5546', 2.4) +
         strokeLine(`M${lx - 11} ${y - 2} L${lx - 19} ${y - 5}`, '#7a5546', 2.2) +
         strokeLine(`M${rx + 11} ${y - 2} L${rx + 19} ${y - 5}`, '#7a5546', 2.2);
-    case 'zonnebril':
+    case 'sunglasses':
       return [lx, rx].map((x) =>
         el('path', { d: `M${x - 12} ${y - 7} L${x + 12} ${y - 7} Q${x + 12} ${y + 9} ${x} ${y + 9} Q${x - 12} ${y + 9} ${x - 12} ${y - 7} Z`, fill: '#2d2b3a', stroke: '#1b1a24', 'stroke-width': 2 }) +
         strokeLine(`M${x - 7} ${y - 3} L${x - 2} ${y - 3}`, '#ffffff', 2, { opacity: 0.55 })).join('') +
         strokeLine(`M${lx + 12} ${y - 6} L${rx - 12} ${y - 6}`, '#1b1a24', 2.6) +
         strokeLine(`M${lx - 12} ${y - 6} L${lx - 19} ${y - 8}`, '#1b1a24', 2.2) +
         strokeLine(`M${rx + 12} ${y - 6} L${rx + 19} ${y - 8}`, '#1b1a24', 2.2);
-    case 'hartjes': {
+    case 'hearts': {
       const heart = (x) => el('path', {
         d: `M${x} ${y + 9} C${x - 15} ${y} ${x - 12} ${y - 11} ${x - 5.5} ${y - 9} C${x - 2.5} ${y - 8} ${x} ${y - 5.5} ${x} ${y - 4} C${x} ${y - 5.5} ${x + 2.5} ${y - 8} ${x + 5.5} ${y - 9} C${x + 12} ${y - 11} ${x + 15} ${y} ${x} ${y + 9} Z`,
         fill: '#ff5c8a', 'fill-opacity': 0.82, stroke: '#d63a6a', 'stroke-width': 2, 'stroke-linejoin': 'round',
@@ -480,7 +511,7 @@ function keyboard(kb, mouseSide) {
     });
   });
 
-  const lip = darker(kb.base, kb.id === 'nacht' ? 0.3 : 0.12);
+  const lip = darker(kb.base, kb.id === 'night' ? 0.3 : 0.12);
   const board =
     el('rect', { x: KB.x, y: KB.y + 5, width: KB.w, height: KB.h, rx: 10, fill: lip, stroke: outline(kb.base), 'stroke-width': SW }) +
     el('rect', { x: KB.x, y: KB.y, width: KB.w, height: KB.h, rx: 10, fill: kb.base, stroke: outline(kb.base), 'stroke-width': SW }) +
@@ -596,7 +627,7 @@ function colorsFor(def) {
 export function renderBuddy(def, opts = {}) {
   const mouseSide = opts.mouseSide === 'left' ? 'left' : 'right';
   const c = colorsFor(def);
-  const artFn = SPECIES_ART[def.species] || SPECIES_ART.kat;
+  const artFn = SPECIES_ART[def.species] || SPECIES_ART.cat;
   const art = artFn(c);
   const f = { ...FACE, ...(art.face || {}) };
   const line = outline(c.body);
@@ -633,10 +664,26 @@ export function renderBuddy(def, opts = {}) {
       effects(mouseSide);
   return (
     `<svg class="buddy-svg" viewBox="${viewBox}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="${pivots(art, mouseSide)}">` +
-    scene +
+    PIXEL_FILTER +
+    el('g', { class: 'scene' }, scene) +
     '</svg>'
   );
 }
+
+/**
+ * Pixel mode: keeps one colour per 4 x 4 block (a dot sampled in each
+ * block, then grown to fill it). Used when a parent has the class "pixel".
+ * Every buddy carries the same definition, so a duplicate id is harmless.
+ */
+const PIXEL = 4;
+const PIXEL_FILTER =
+  '<defs><filter id="db-pixel" x="0" y="0" width="240" height="200" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">' +
+  `<feFlood x="${PIXEL / 2 - 0.5}" y="${PIXEL / 2 - 0.5}" width="1" height="1"/>` +
+  `<feComposite width="${PIXEL}" height="${PIXEL}"/>` +
+  '<feTile result="dots"/>' +
+  '<feComposite in="SourceGraphic" in2="dots" operator="in"/>' +
+  `<feMorphology operator="dilate" radius="${PIXEL / 2}"/>` +
+  '</filter></defs>';
 
 /** Only the head and shoulders, for small icons. */
 export function renderHead(def) {

@@ -1,144 +1,141 @@
 # DeskBuddy
 
-Een klein maatje op je bureaublad dat meetikt als jij typt of klikt.
-Voor **Mac en Windows**, zonder Steam, zuinig, en wat je typt blijft van jou.
+A little companion on your desktop that taps along whenever you type or click.
+For **Mac and Windows**, no Steam needed, light on your computer, and what you type stays yours.
 
-![De tien buddy's van DeskBuddy](docs/buddies.png)
+![The eleven DeskBuddy buddies](docs/buddies.png)
 
-- **Tikt mee**: toetsen links op je toetsenbord → linkerpootje, rechts → rechterpootje,
-  spatiebalk → allebei, klikken → pootje op het muisje. Typ je snel, dan wordt hij er helemaal blij van.
-- **Tien buddy's** om uit te kiezen: kat, konijn, beer, kikker, pinguïn, vos, panda, hamster, puppy en een wolkje.
-- **Zelf maken**: kies een dier, kleuren, oogjes, mondje, hoedjes, brilletjes en een toetsenbord.
-  Of gebruik **je eigen tekeningen** (of een foto van je huisdier).
-- **Verdienen**: elke toets en klik telt. Bij 1.000, 5.000, 25.000 … tikjes verdien je nieuwe spulletjes,
-  tot een gouden toetsenbord bij een miljoen.
-- **Rustig**: geen meldingen, geen winkel, geen vriendenlijst. Na een tijdje niets doen valt hij in slaap.
-- **Spookmodus**: klikken gaan dwars door je buddy heen, zodat hij nooit in de weg zit.
+- **Taps along**: keys on the left of your keyboard → left paw, on the right → right paw,
+  space bar → both, clicks → a paw on the little mouse. Type fast and it gets really excited.
+- **Eleven buddies** to choose from: cat, bunny, bear, frog, penguin, fox, red panda, panda, hamster, puppy and a little cloud.
+- **Make your own**: pick an animal, colors, eyes, mouth, hats, glasses and a keyboard.
+  Or use **your own drawings** (or a photo of your pet).
+- **Earn things**: every key press and click counts. Your first hat arrives after just 100 taps,
+  all the way up to a golden keyboard.
+- **Pixel mode**: turn every buddy, hat and keyboard into chunky retro pixels.
+- **Calm**: no notifications, no store, no friends list. After a while without input it falls asleep.
+- **Ghost mode**: clicks go straight through your buddy, so it's never in the way.
 
-| Je buddy kiezen | Zelf maken | Verzameling |
+![Pixel mode](docs/pixel.png)
+
+| Pick your buddy | Make your own | Collection |
 | --- | --- | --- |
-| ![Mijn buddy](docs/buddy.png) | ![Zelf maken](docs/maken.png) | ![Verzameling](docs/verzameling.png) |
+| ![My buddy](docs/buddy.png) | ![Make your own](docs/make.png) | ![Collection](docs/collection.png) |
 
-## Installeren
+## Install
 
-Download de nieuwste versie:
+Download the latest version from the **[Releases page](https://github.com/VR0EM/DeskBuddy/releases/latest)**:
 
-1. Ga op GitHub naar het tabblad **Actions** en klik op de bovenste run met een groen vinkje.
-2. Onderaan bij **Artifacts** staat `DeskBuddy-macOS` en `DeskBuddy-Windows`. Download de jouwe en pak het zipje uit.
-
-(Staat er een versie bij **Releases**? Dan kun je hem ook daar downloaden.)
+- **Mac** (Apple Silicon and Intel): `DeskBuddy_…_universal.dmg`
+- **Windows**: `DeskBuddy_…_x64-setup.exe` (or the `.msi` if you prefer)
 
 ### Mac
 
-1. Open `DeskBuddy_…_universal.dmg` en sleep **DeskBuddy** naar de map **Applications** (Programma's).
-   Werkt op Macs met een Apple-chip én op oudere Intel-Macs.
-2. De eerste keer zegt macOS dat het de app niet kan controleren. Dat komt doordat DeskBuddy niet
-   ondertekend is met een (betaald) Apple-ontwikkelaarsaccount. Zo open je hem toch:
-   - Probeer DeskBuddy één keer te openen en klik het venster weg.
-   - Ga naar **Systeeminstellingen › Privacy en beveiliging**, scroll naar beneden en klik bij DeskBuddy op **Open toch**.
-   - Of in Terminal: `xattr -dr com.apple.quarantine /Applications/DeskBuddy.app`
-3. macOS vraagt toestemming om toetsaanslagen te zien. Zet DeskBuddy aan bij
-   **Systeeminstellingen › Privacy en beveiliging › Invoermonitoring** en kies daarna **Stop en open opnieuw**.
-   Zonder deze toestemming ziet DeskBuddy alleen je klikken.
-4. DeskBuddy woont in de **menubalk** (het pootje bovenaan je scherm), niet in het Dock.
+1. Open the `.dmg` and drag **DeskBuddy** into the **Applications** folder.
+2. The first time, macOS says it can't check the app. That's because DeskBuddy isn't signed with a
+   (paid) Apple developer account. To open it anyway:
+   - Try to open DeskBuddy once and close the message.
+   - Go to **System Settings › Privacy & Security**, scroll down and click **Open Anyway** next to DeskBuddy.
+   - Or in Terminal: `xattr -dr com.apple.quarantine /Applications/DeskBuddy.app`
+3. macOS asks for permission to see key presses. Turn DeskBuddy on under
+   **System Settings › Privacy & Security › Input Monitoring**, then choose **Quit & Reopen**.
+   Without this permission DeskBuddy only sees your clicks.
+4. DeskBuddy lives in the **menu bar** (the paw at the top of your screen), not in the Dock.
 
-> Na het installeren van een nieuwe versie moet je DeskBuddy soms opnieuw aanzetten bij Invoermonitoring
-> (eerst uit, dan weer aan). Ook dat komt doordat de app niet betaald ondertekend is.
+> After installing a new version you may have to switch DeskBuddy off and on again under
+> Input Monitoring. That's also because the app isn't signed with a paid certificate.
 
 ### Windows
 
-1. Start `DeskBuddy_…_x64-setup.exe`. Je hebt geen beheerdersrechten nodig.
-2. Krijg je een blauw venster **"Windows heeft uw pc beschermd"**? Klik op **Meer informatie** en dan
-   **Toch uitvoeren**. Ook dit komt doordat de app niet ondertekend is met een betaald certificaat.
-3. DeskBuddy staat in het **systeemvak** rechtsonder (misschien achter het pijltje ^).
-   Klik op het pootje voor de instellingen, rechtsklik voor het menu.
+1. Run `DeskBuddy_…_x64-setup.exe`. You don't need administrator rights.
+2. Seeing a blue **"Windows protected your PC"** window? Click **More info** and then **Run anyway**.
+   This is also because the app isn't signed with a paid certificate.
+3. DeskBuddy sits in the **system tray** at the bottom right (maybe behind the ^ arrow).
+   Click the paw for the settings, right-click it for the menu.
 
-Liever een `.msi`? Die zit ook in het zipje.
+## Using it
 
-## Gebruiken
+- **Drag** to move your buddy. It remembers its spot, even after a restart.
+- **Clicking** your buddy makes it happy.
+- **Double-click** opens the settings, **right-click** gives a quick menu.
+- In the way? Turn on **Ghost mode** (in the menu or the settings). Turn it off again with the
+  paw in the menu bar or system tray.
+- In **Settings** you can make it bigger or smaller, more see-through, switch on pixel mode, let it
+  fall asleep, put the mouse on the left, and let DeskBuddy **start at login**.
 
-- **Slepen** verplaatst je buddy. Hij onthoudt zijn plekje, ook na een herstart.
-- **Klikken** op je buddy vindt hij leuk.
-- **Dubbelklikken** opent de instellingen, **rechtsklikken** geeft een snelmenu.
-- Staat hij in de weg? Zet **Spookmodus** aan (in het menu of de instellingen). Uitzetten doe je via het
-  pootje in de menubalk of het systeemvak.
-- Bij **Instellingen** kun je hem groter of kleiner maken, doorzichtiger, laten slapen,
-  de muis aan de linkerkant zetten en DeskBuddy laten **starten bij inloggen**.
+## Making your own buddies
 
-## Zelf buddy's maken
+Open the settings and choose **Make your own**.
 
-Open de instellingen en kies **Zelf maken**.
+**Design**: pick an animal and play with colors and accessories. You see it tapping right away.
+You can also customize a ready-made buddy: that makes your own version of it. "Surprise me" makes one up for you.
 
-**Ontwerpen**: kies een dier en speel met de kleuren en spulletjes. Je ziet hem meteen meetikken.
-Een kant-en-klare buddy aanpassen kan ook: dan maak je er je eigen versie van. "Verras me" verzint er een voor je.
+**Own drawing**: make pictures in any drawing app (or use photos):
 
-**Eigen tekening**: maak plaatjes in een tekenprogramma (of gebruik foto's):
-
-| Plaatje | Wanneer | Nodig? |
+| Picture | When | Needed? |
 | --- | --- | --- |
-| Gewoon | als je niets doet | ja |
-| Linkerpootje | bij toetsen links op je toetsenbord | nee |
-| Rechterpootje | bij toetsen rechts en bij klikken | nee |
-| Allebei | bij de spatiebalk | nee |
-| Slapend | als hij een dutje doet | nee |
+| Normal | when you do nothing | yes |
+| Left paw | for keys on the left of your keyboard | no |
+| Right paw | for keys on the right and for clicks | no |
+| Both paws | for the space bar | no |
+| Sleeping | when it takes a nap | no |
 
-Tips: sla ze op als **PNG met een doorzichtige achtergrond** en maak ze allemaal even groot,
-dan springt hij niet heen en weer. Eén plaatje is al genoeg: dan wipt hij mee met elke toets.
-Grote plaatjes worden automatisch kleiner gemaakt; een bewegende GIF (tot 2 MB) blijft bewegen.
+Tips: save them as **PNG with a transparent background** and make them all the same size,
+so it doesn't jump around. One picture is enough: then it hops along with every key.
+Large pictures are made smaller automatically; an animated GIF (up to 2 MB) stays animated.
 
-## Verdienen
+## Things to earn
 
-| Tikjes | Je verdient |
+| Taps | You earn |
 | ---: | --- |
-| 1.000 | Feesthoedje |
-| 2.500 | Hartjesbril |
-| 5.000 | Koptelefoon |
-| 10.000 | Ronde bril |
-| 25.000 | Propellerpet (draait als je snel typt) |
-| 50.000 | Zonnebril |
-| 100.000 | Kroontje |
-| 250.000 | Tovenaarshoed |
-| 500.000 | Regenboog-toetsenbord |
-| 750.000 | Aureool |
-| 1.000.000 | Gouden toetsenbord |
+| 100 | Party hat |
+| 250 | Heart glasses |
+| 500 | Headphones |
+| 1,000 | Round glasses |
+| 2,500 | Propeller cap (spins when you type fast) |
+| 5,000 | Sunglasses |
+| 10,000 | Crown |
+| 25,000 | Wizard hat |
+| 50,000 | Rainbow keyboard |
+| 75,000 | Halo |
+| 100,000 | Golden keyboard |
 
 ## Privacy
 
-DeskBuddy telt alleen **hoeveel** toetsen en klikken je doet, en of een toets links of rechts op je
-toetsenbord zit (voor het juiste pootje). **Welke** toets je indrukt wordt nooit doorgegeven of bewaard,
-en DeskBuddy maakt geen verbinding met internet. Bekijk het zelf in
-[`src-tauri/input`](src-tauri/input/src): daar komt alleen "links", "rechts" of "spatie" uit.
+DeskBuddy only counts **how many** keys and clicks you make, and whether a key is on the left or the
+right of your keyboard (for the right paw). **Which** key you press is never passed on or stored,
+and DeskBuddy never connects to the internet. See for yourself in
+[`src-tauri/input`](src-tauri/input/src): all that comes out is "left", "right" or "space".
 
-Alles wat DeskBuddy onthoudt staat in één mapje op je eigen computer:
+Everything DeskBuddy remembers lives in one folder on your own computer:
 
 - Mac: `~/Library/Application Support/io.github.vr0em.deskbuddy/`
 - Windows: `%APPDATA%\io.github.vr0em.deskbuddy\`
 
-Daarin staan `settings.json`, `stats.json` (je tellers) en `buddies.json` (je eigen buddy's).
-Kopieer dat mapje als je je tellers wilt bewaren of meenemen naar een andere computer.
+It holds `settings.json`, `stats.json` (your counters) and `buddies.json` (your own buddies).
+Copy that folder to keep your counters or take them to another computer.
 
-## Waarom het zuinig is
+## Why it's light
 
-- Geen Steam en geen eigen browser: DeskBuddy gebruikt de webweergave die al in je systeem zit
-  (WebView2 op Windows, WebKit op de Mac). De download is maar een paar megabyte.
-- Het luisteren naar je toetsenbord gebeurt in een klein stukje Rust-code dat alleen een seintje geeft.
-- De buddy tekent alleen iets nieuws als er iets verandert. Zet **Levendig** uit en hij beweegt
-  helemaal alleen nog als jij iets doet.
+- No Steam and no bundled browser: DeskBuddy uses the web view that's already part of your system
+  (WebView2 on Windows, WebKit on the Mac). The download is only a few megabytes.
+- Listening to your keyboard happens in a small piece of Rust code that only sends a signal.
+- The buddy only redraws when something changes. Turn **Lively** off and it only moves when you do something.
 
-## Problemen?
+## Troubleshooting
 
-- **Mac: hij tikt niet mee als ik typ.** Zet DeskBuddy aan bij *Systeeminstellingen › Privacy en beveiliging ›
-  Invoermonitoring* en start hem opnieuw. Staat hij er al aan (bijvoorbeeld na een nieuwe versie)? Zet hem uit en weer aan.
-- **Windows: hij tikt niet mee in één bepaald programma.** Programma's die als administrator draaien,
-  schermt Windows af. In die vensters ziet DeskBuddy je toetsen niet.
-- **Buddy kwijt?** Kies *Terug naar de hoek* in het menu bij het pootje (menubalk of systeemvak).
-- **Hij staat in de weg bij klikken?** Zet *Spookmodus* aan.
+- **Mac: it doesn't tap when I type.** Turn DeskBuddy on under *System Settings › Privacy & Security ›
+  Input Monitoring* and restart it. Already on (for example after a new version)? Switch it off and on again.
+- **Windows: it doesn't tap in one particular program.** Windows shields programs that run as
+  administrator. DeskBuddy can't see your keys in those windows.
+- **Lost your buddy?** Choose *Back to the corner* in the paw menu (menu bar or system tray).
+- **In the way when clicking?** Turn on *Ghost mode*.
 
-## Zelf bouwen
+## Building it yourself
 
-Voor wie zelf aan DeskBuddy wil sleutelen. Je hebt nodig:
-[Rust](https://rustup.rs), [Node.js](https://nodejs.org) 20 of nieuwer, en op Windows de
-[Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) of op de Mac de
+For anyone who wants to tinker with DeskBuddy. You need:
+[Rust](https://rustup.rs), [Node.js](https://nodejs.org) 20 or newer, and on Windows the
+[Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), or on the Mac the
 Xcode Command Line Tools (`xcode-select --install`).
 
 ```bash
@@ -149,55 +146,47 @@ npm install
 npm run dev
 ```
 
-Een installer maken:
+To make an installer:
 
 ```bash
 npm run build
 ```
 
-Alleen het uiterlijk bekijken, zonder de app te bouwen (in je gewone browser):
+To only look at the UI, without building the app (in your normal browser):
 
 ```bash
 npm run preview
 ```
 
-en open dan http://localhost:5173. Toetsen en klikken in dat tabblad tellen dan als tikjes.
+and open http://localhost:5173. Keys and clicks in that tab count as taps.
 
-Wil je zien wat de toetsenbord-luisteraar precies oppikt? In de map `src-tauri`:
+Want to see exactly what the keyboard listener picks up? In the `src-tauri` folder:
 
 ```bash
 cargo run -p deskbuddy-input --example listen
 ```
 
-Druk dan wat toetsen in en klik een paar keer. Met de omgevingsvariabele `DESKBUDDY_DEBUG=1`
-vertelt de app zelf in de terminal wat hij ziet.
+Then press some keys and click a few times. With the environment variable `DESKBUDDY_DEBUG=1`
+the app itself tells you in the terminal what it sees.
 
-### Hoe het in elkaar zit
+### How it fits together
 
-| Map | Wat |
+| Folder | What |
 | --- | --- |
-| `src-tauri/input` | Luistert naar toetsenbord en muis: Windows-hooks en macOS-event-taps. Geeft alleen door *dat* er iets gebeurde en aan welke kant. |
-| `src-tauri/src` | De app: vensters, menubalk/systeemvak, opslaan van instellingen en tellers. |
-| `ui/js/render.js` | Tekent de buddy's als SVG. Hier voeg je nieuwe dieren of hoedjes toe. |
-| `ui/js/catalog.js` | Alle dieren, kleuren, spulletjes en wanneer je ze verdient. |
-| `ui/js/stage.js` | Laat een buddy bewegen: tikken, knipperen, slapen. |
-| `ui/settings.html`, `ui/js/settings.js` | Het instellingenvenster. |
-| `ui/buddy.html`, `ui/js/buddy.js` | Het doorzichtige buddy-venster. |
-| `dev/gallery.html` | Overzicht van alle buddy's en houdingen (open via `npm run preview`). |
+| `src-tauri/input` | Listens to the keyboard and mouse: Windows hooks and macOS event taps. Only reports *that* something happened and on which side. |
+| `src-tauri/src` | The app: windows, menu bar/system tray, saving settings and counters. |
+| `ui/js/render.js` | Draws the buddies as SVG, including pixel mode. Add new animals or hats here. |
+| `ui/js/catalog.js` | All animals, colors, accessories and when you earn them. |
+| `ui/js/stage.js` | Brings a buddy to life: tapping, blinking, sleeping. |
+| `ui/settings.html`, `ui/js/settings.js` | The settings window. |
+| `ui/buddy.html`, `ui/js/buddy.js` | The transparent buddy window. |
+| `dev/gallery.html` | Overview of all buddies and poses (open it via `npm run preview`). |
 
-### Een nieuwe versie uitbrengen
+### Releasing a new version
 
-1. Verhoog het versienummer in `src-tauri/tauri.conf.json` (en in `package.json` en `src-tauri/Cargo.toml`).
-2. Maak een tag en push hem:
+1. Raise the version number in `src-tauri/tauri.conf.json` (and in `package.json` and `src-tauri/Cargo.toml`).
+2. Commit with a message that starts with `Release v` followed by that version, for example `Release v1.2.0`,
+   and push it. (Pushing a tag like `v1.2.0` works too.)
+3. GitHub Actions builds the installers and publishes them on the Releases page.
 
-   ```bash
-   git tag v0.2.0
-   ```
-
-   ```bash
-   git push origin v0.2.0
-   ```
-
-3. GitHub Actions bouwt de installers en zet ze in een concept-release. Publiceer die bij **Releases**.
-
-Het lettertype is [Nunito](https://github.com/googlefonts/nunito) (SIL Open Font License, zie `ui/fonts/OFL.txt`).
+The font is [Nunito](https://github.com/googlefonts/nunito) (SIL Open Font License, see `ui/fonts/OFL.txt`).

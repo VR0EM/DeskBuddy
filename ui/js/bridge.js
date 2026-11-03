@@ -34,7 +34,7 @@ const preview = (() => {
   const defaults = {
     settings: {
       activeBuddy: 'pip', scale: 1, opacity: 1, alwaysOnTop: true, clickThrough: false,
-      showCounter: true, lively: true, sleepMinutes: 5, mouseSide: 'right', hidden: false,
+      showCounter: true, lively: true, pixel: false, sleepMinutes: 5, mouseSide: 'right', hidden: false,
       position: null, welcomed: false,
     },
     stats: { total: 0, keys: 0, clicks: 0, days: {}, firstDay: null },

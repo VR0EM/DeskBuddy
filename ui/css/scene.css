@@ -184,3 +184,8 @@
 .img-zzz span { font-size: 1.3em; margin-left: 0.1em; }
 .img-zzz b { font-size: 1.7em; margin-left: 0.1em; }
 .sleep .img-zzz { display: block; }
+
+/* ---- Pixel mode: everything in chunky 4 x 4 blocks ---- */
+.pixel .buddy-svg .scene { filter: url(#db-pixel); }
+.pixel .img-buddy img { filter: url(#db-pixel-img); }
+.pixel .boop-heart { image-rendering: pixelated; }

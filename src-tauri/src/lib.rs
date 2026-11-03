@@ -422,30 +422,30 @@ enum MenuKind {
 }
 
 fn build_menu(app: &AppHandle, s: &Settings, kind: MenuKind) -> tauri::Result<Menu<Wry>> {
-    let visible = CheckMenuItemBuilder::with_id("visible", "Buddy tonen")
+    let visible = CheckMenuItemBuilder::with_id("visible", "Show buddy")
         .checked(!s.hidden)
         .build(app)?;
-    let ghost = CheckMenuItemBuilder::with_id("ghost", "Spookmodus (klikken gaan erdoorheen)")
+    let ghost = CheckMenuItemBuilder::with_id("ghost", "Ghost mode (click through)")
         .checked(s.click_through)
         .build(app)?;
-    let on_top = CheckMenuItemBuilder::with_id("on-top", "Altijd bovenop")
+    let on_top = CheckMenuItemBuilder::with_id("on-top", "Always on top")
         .checked(s.always_on_top)
         .build(app)?;
 
     let mut menu = MenuBuilder::new(app)
-        .text("settings", "Instellingen…")
+        .text("settings", "Settings…")
         .separator();
     if kind == MenuKind::Tray {
         menu = menu.item(&visible);
     }
     menu = menu.item(&ghost).item(&on_top);
     if kind == MenuKind::Buddy {
-        menu = menu.text("hide", "Verbergen");
+        menu = menu.text("hide", "Hide");
     }
     menu.separator()
-        .text("reset-position", "Terug naar de hoek")
+        .text("reset-position", "Back to the corner")
         .separator()
-        .text("quit", "DeskBuddy afsluiten")
+        .text("quit", "Quit DeskBuddy")
         .build()
 }
 
@@ -641,7 +641,7 @@ pub fn run() {
 
             let autostarted = std::env::args().any(|arg| arg == AUTOSTART_FLAG);
             if !settings.welcomed && !autostarted {
-                open_settings(&handle, Some("welkom"));
+                open_settings(&handle, Some("welcome"));
                 let mut s = store(&handle);
                 s.settings.welcomed = true;
                 s.save_settings();
@@ -651,7 +651,7 @@ pub fn run() {
         .build(tauri::generate_context!())
         .expect("DeskBuddy could not start")
         .run(|app, event| match event {
-            // Closing the settings window must not quit; only "Afsluiten" does.
+            // Closing the settings window must not quit; only "Quit" does.
             RunEvent::ExitRequested { api, code, .. } if code.is_none() => api.prevent_exit(),
             RunEvent::Exit => store(app).flush(),
             #[cfg(target_os = "macos")]

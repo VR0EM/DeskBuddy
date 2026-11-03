@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Buddy gallery (dev)</title>
@@ -39,15 +39,17 @@
   if (mode === 'keyboards') KEYBOARDS.forEach((k, i) => add({ ...base('pip'), keyboard: k.id }, k.name));
   if (mode === 'eyes') EYES.forEach((e) => MOUTHS.forEach((m) => add({ ...base('pinda'), eyes: e.id, mouth: m.id }, `${e.name} + ${m.name}`)));
   if (mode === 'frog') HATS.forEach((h) => add({ ...base('flip'), hat: h.id }, h.name));
+  if (mode === 'redpanda') ['', 'l-down r-mouse fast', 'sleep'].forEach((cls) => add(base('maple'), cls || 'idle', cls));
   if (mode === 'sleep') PRESETS.forEach((p) => add(p, p.name, 'sleep'));
   if (mode === 'hero') {
-    const poses = ['l-down', 'r-mouse', '', 'fast r-down', 'l-down r-down', 'r-down', 'sleep', 'l-down', 'fast l-down', 'blink'];
+    const poses = ['l-down', 'r-mouse', '', 'fast r-down', 'l-down r-down', 'r-down', '', 'sleep', 'l-down', 'fast l-down', 'blink'];
     PRESETS.forEach((p, i) => add(p, p.name, poses[i]));
     document.body.classList.add('hero');
   }
   if (mode === 'allposes') PRESETS.forEach((p) => add(p, p.name + ' tik', 'l-down r-mouse fast'));
   const grid = document.getElementById('grid');
   if (q.get('cols')) grid.style.setProperty('--cols', q.get('cols'));
+  if (q.get('pixel')) document.body.classList.add('pixel');
   grid.innerHTML = cells.map((c, i) => `<div class="cell"><div class="stage ${c.cls}">${renderBuddy(c.def, c.opts)}</div><p>${c.label}</p></div>`).join('');
   document.body.dataset.ready = '1';
 </script>

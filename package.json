@@ -1,8 +1,8 @@
 {
   "name": "deskbuddy",
   "private": true,
-  "version": "1.0.0",
-  "description": "Schattige bureau-buddy's die meetikken als je typt. Zonder Steam.",
+  "version": "1.1.0",
+  "description": "Cute desk buddies that tap along while you type. No Steam needed.",
   "scripts": {
     "tauri": "tauri",
     "dev": "tauri dev",

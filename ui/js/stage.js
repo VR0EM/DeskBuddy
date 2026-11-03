@@ -18,7 +18,11 @@ function imageMarkup(def) {
   const imgs = FRAMES.filter((f) => isImageData(frames[f]))
     .map((f) => `<img class="f-${f}" src="${frames[f]}" alt="" draggable="false">`)
     .join('');
-  return `<div class="img-buddy" data-frame="idle">${imgs}<div class="img-zzz" aria-hidden="true">z<span>z</span><b>Z</b></div></div>`;
+  // Pixel mode for drawings: the same block filter, sized in CSS pixels.
+  const filter = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="db-pixel-img" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">'
+    + '<feFlood x="2.5" y="2.5" width="1" height="1"/><feComposite width="6" height="6"/><feTile result="dots"/>'
+    + '<feComposite in="SourceGraphic" in2="dots" operator="in"/><feMorphology operator="dilate" radius="3"/></filter></svg>';
+  return `<div class="img-buddy" data-frame="idle">${filter}${imgs}<div class="img-zzz" aria-hidden="true">z<span>z</span><b>Z</b></div></div>`;
 }
 
 export class BuddyStage {
@@ -58,6 +62,7 @@ export class BuddyStage {
   setOptions(opts) {
     this.opts = { ...this.opts, ...opts };
     this.el.classList.toggle('lively', Boolean(this.opts.lively));
+    this.el.classList.toggle('pixel', Boolean(this.opts.pixel));
     this.checkSleep();
   }
 

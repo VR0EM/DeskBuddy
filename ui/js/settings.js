@@ -12,14 +12,14 @@ import { BuddyStage, FRAMES, isImageData } from './stage.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-const number = new Intl.NumberFormat('nl-NL');
-const compact = new Intl.NumberFormat('nl-NL', { notation: 'compact', maximumFractionDigits: 1 });
-const TABS = ['welkom', 'buddy', 'maken', 'verzameling', 'instellingen', 'over'];
-const NAMES = ['Boris', 'Fleur', 'Pluk', 'Stip', 'Kiki', 'Bolletje', 'Snoes', 'Teddy', 'Lotje', 'Puk',
-  'Dotje', 'Wiebel', 'Knabbel', 'Sproet', 'Noepie', 'Saar', 'Moppie', 'Toffee', 'Floor', 'Muffin', 'Okkie', 'Bobbie'];
+const number = new Intl.NumberFormat('en-US');
+const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
+const TABS = ['welcome', 'buddies', 'make', 'collection', 'preferences', 'about'];
+const NAMES = ['Biscuit', 'Bean', 'Pumpkin', 'Pebble', 'Kiki', 'Dumpling', 'Waffles', 'Teddy', 'Noodle', 'Pickle',
+  'Dot', 'Wiggles', 'Nibbles', 'Freckles', 'Sprout', 'Clover', 'Mittens', 'Toffee', 'Hazel', 'Muffin', 'Ollie', 'Bobbie'];
 
 let state = null; // snapshot from the app, kept up to date by events
-let tab = 'buddy';
+let tab = 'buddies';
 const stages = {};
 const maker = { mode: 'drawn', draft: null, image: null, editingId: null };
 
@@ -43,7 +43,7 @@ function iconButton(icon, label, onClick, extra = '') {
 }
 
 /** First click arms the button, a second click within 3 s does the thing. */
-function confirmClick(button, action, armedLabel = 'Nog een keer klikken') {
+function confirmClick(button, action, armedLabel = 'Click again to confirm') {
   let armedAt = 0;
   button.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -80,11 +80,11 @@ const newId = (prefix) => `${prefix}-${Date.now().toString(36)}${Math.random().t
 const pick = (list) => list[Math.floor(Math.random() * list.length)];
 const dayKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const parseDay = (key) => new Date(`${key}T12:00:00`);
-const niceDate = (key, opts = { day: 'numeric', month: 'short' }) => parseDay(key).toLocaleDateString('nl-NL', opts);
+const niceDate = (key, opts = { day: 'numeric', month: 'short' }) => parseDay(key).toLocaleDateString('en-US', opts);
 
 function kindLabel(b) {
-  if (b.kind === 'image') return 'Eigen tekening';
-  return speciesById(b.species).name + (b.preset ? '' : ' · zelf gemaakt');
+  if (b.kind === 'image') return 'Own drawing';
+  return speciesById(b.species).name + (b.preset ? '' : ' · made by you');
 }
 
 function thumbMarkup(b) {
@@ -105,8 +105,8 @@ function drawnBase() {
 // ---------------------------------------------------------------- tabs
 
 function showTab(name) {
-  if (!TABS.includes(name)) name = 'buddy';
-  if (name === 'maken' && !maker.draft && !maker.image) {
+  if (!TABS.includes(name)) name = 'buddies';
+  if (name === 'make' && !maker.draft && !maker.image) {
     startMaker({ mode: 'drawn' });
     return;
   }
@@ -115,7 +115,7 @@ function showTab(name) {
     $(`#tab-${t}`).hidden = t !== name;
   });
   $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === name));
-  if (name === 'verzameling') renderCollection();
+  if (name === 'collection') renderCollection();
   $('#main').scrollTop = 0;
   rememberTab(name);
 }
@@ -137,7 +137,7 @@ function renderGallery() {
   if (own.length) {
     ownBox.replaceChildren(...own.map((b) => buddyCard(b, activeId)));
   } else {
-    ownBox.replaceChildren(make('div', 'empty', 'Nog niets. Maak je eerste eigen buddy met “Nieuwe buddy”.'));
+    ownBox.replaceChildren(make('div', 'empty', 'Nothing yet. Make your first own buddy with “New buddy”.'));
   }
   $('#preset-gallery').replaceChildren(...PRESETS.map((b) => buddyCard(b, activeId)));
 
@@ -145,7 +145,7 @@ function renderGallery() {
   const opts = { mouseSide: state.settings.mouseSide };
   stages.live.show(current, opts);
   stages.welcome.show(current, opts);
-  $('#live-name').textContent = current.name || 'Naamloos';
+  $('#live-name').textContent = current.name || 'Unnamed';
   $('#live-kind').textContent = kindLabel(current);
 }
 
@@ -153,20 +153,20 @@ function buddyCard(b, activeId) {
   const card = make('div', `buddy-card${b.id === activeId ? ' active' : ''}`);
   const choose = make('button', 'buddy-pick');
   choose.type = 'button';
-  choose.setAttribute('aria-label', `Gebruik ${b.name || 'deze buddy'}`);
+  choose.setAttribute('aria-label', `Use ${b.name || 'this buddy'}`);
   choose.innerHTML = `<div class="thumb">${thumbMarkup(b)}</div>`;
   const meta = make('div', 'card-meta');
-  meta.append(make('span', 'card-name', b.name || 'Naamloos'), make('span', 'card-kind', kindLabel(b)));
+  meta.append(make('span', 'card-name', b.name || 'Unnamed'), make('span', 'card-kind', kindLabel(b)));
   choose.append(meta);
   choose.addEventListener('click', () => useBuddy(b));
   card.append(choose);
-  if (b.id === activeId) card.append(make('span', 'badge', 'In gebruik'));
+  if (b.id === activeId) card.append(make('span', 'badge', 'In use'));
 
   const tools = make('div', 'card-tools');
-  tools.append(iconButton('pencil', b.preset ? 'Maak een eigen versie' : 'Aanpassen', () => editBuddy(b)));
+  tools.append(iconButton('pencil', b.preset ? 'Make your own version' : 'Customize', () => editBuddy(b)));
   if (!b.preset) {
-    const del = iconButton('trash', 'Verwijderen', () => {}, 'danger');
-    confirmClick(del, () => deleteBuddy(b), 'Nog een keer klikken om te verwijderen');
+    const del = iconButton('trash', 'Delete', () => {}, 'danger');
+    confirmClick(del, () => deleteBuddy(b), 'Click again to delete');
     tools.append(del);
   }
   card.append(tools);
@@ -176,12 +176,12 @@ function buddyCard(b, activeId) {
 async function useBuddy(b) {
   if (b.id === state.settings.activeBuddy) return;
   await invoke('update_settings', { patch: { activeBuddy: b.id } });
-  toast(`${b.name || 'Je buddy'} zit nu op je bureaublad!`);
+  toast(`${b.name || 'Your buddy'} is on your desktop now!`);
 }
 
 async function deleteBuddy(b) {
   await invoke('delete_buddy', { id: b.id });
-  toast(`${b.name || 'Buddy'} is verwijderd.`);
+  toast(`${b.name || 'Buddy'} was deleted.`);
   if (maker.editingId === b.id) resetMaker();
 }
 
@@ -201,7 +201,7 @@ function startMaker({ mode = 'drawn', buddy = null } = {}) {
   maker.mode = mode;
   maker.editingId = buddy && !buddy.preset && buddy.kind === (mode === 'image' ? 'image' : 'drawn') ? buddy.id : null;
   if (mode === 'drawn') {
-    const base = buddy && buddy.kind === 'drawn' ? buddy : normalizeBuddy({ species: 'kat' });
+    const base = buddy && buddy.kind === 'drawn' ? buddy : normalizeBuddy({ species: 'cat' });
     const draft = normalizeBuddy(JSON.parse(JSON.stringify(base)));
     delete draft.preset;
     draft.id = maker.editingId || newId('my');
@@ -217,13 +217,13 @@ function startMaker({ mode = 'drawn', buddy = null } = {}) {
     $('#image-name').value = maker.image.name || '';
   }
   renderMaker();
-  tab = 'maken';
+  tab = 'make';
   TABS.forEach((t) => {
-    $(`#tab-${t}`).hidden = t !== 'maken';
+    $(`#tab-${t}`).hidden = t !== 'make';
   });
-  $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === 'maken'));
+  $$('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === 'make'));
   $('#main').scrollTop = 0;
-  rememberTab('maken');
+  rememberTab('make');
 }
 
 function renderMaker() {
@@ -233,10 +233,10 @@ function renderMaker() {
   $('#maker-image').hidden = drawn;
   $('#maker-random').hidden = !drawn;
   $('#maker-delete').hidden = !maker.editingId;
-  $('#maker-title').textContent = maker.editingId ? 'Buddy aanpassen' : 'Zelf maken';
+  $('#maker-title').textContent = maker.editingId ? 'Customize buddy' : 'Make your own';
   $('#maker-sub').textContent = drawn
-    ? 'Kies een dier, kleuren en spulletjes. Je ziet het meteen.'
-    : 'Gebruik je eigen tekeningen of foto’s.';
+    ? 'Pick an animal, colors and accessories. You see it right away.'
+    : 'Use your own drawings or photos.';
   if (drawn) renderDrawnForm();
   else renderImageForm();
   updateMakerPreview();
@@ -250,7 +250,7 @@ function updateMakerPreview() {
     stages.maker.show(maker.image, opts);
   } else {
     stages.maker.show({ kind: 'image', frames: {} }, opts);
-    const hint = make('div', 'stage-empty', 'Kies eerst het gewone plaatje');
+    const hint = make('div', 'stage-empty', 'Pick the normal picture first');
     hint.style.cssText = 'position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-weight:800';
     stages.maker.el.append(hint);
   }
@@ -302,17 +302,17 @@ function renderSwatches(row, slot) {
     b.type = 'button';
     b.style.background = hex;
     b.title = hex;
-    b.setAttribute('aria-label', `Kleur ${hex}`);
+    b.setAttribute('aria-label', `Color ${hex}`);
     b.addEventListener('click', () => setColor(slot, hex));
     return b;
   });
   const custom = make('label', `swatch custom${inList ? '' : ' on'}`);
-  custom.title = 'Kies zelf een kleur';
+  custom.title = 'Pick your own color';
   if (!inList) custom.style.background = current;
   const input = document.createElement('input');
   input.type = 'color';
   input.value = /^#[0-9a-f]{6}$/.test(current) ? current : '#ffffff';
-  input.setAttribute('aria-label', 'Kies zelf een kleur');
+  input.setAttribute('aria-label', 'Pick your own color');
   input.addEventListener('input', () => setColor(slot, input.value, false));
   input.addEventListener('change', () => setColor(slot, input.value));
   custom.append(input);
@@ -333,11 +333,11 @@ function renderChips(selector, items, current, onPick, { lockable = false, dot =
     if (locked) {
       b.insertAdjacentHTML('beforeend', ICONS.lock);
       b.setAttribute('aria-disabled', 'true');
-      b.title = `Verdien je bij ${number.format(item.unlock)} tikjes`;
+      b.title = `Earned at ${number.format(item.unlock)} taps`;
     }
     b.append(document.createTextNode(item.name));
     b.addEventListener('click', () => {
-      if (locked) toast(`Nog ${number.format(item.unlock - state.stats.total)} tikjes tot ${item.name}!`);
+      if (locked) toast(`${number.format(item.unlock - state.stats.total)} more taps until ${item.name}!`);
       else onPick(item.id);
     });
     return b;
@@ -358,8 +358,8 @@ function randomize() {
     colors: { body, accent, paw: Math.random() < 0.65 ? body : accent, cheek: pick(CHEEKS) },
     eyes: Math.random() < 0.6 ? s.eyes : pick(EYES).id,
     mouth: Math.random() < 0.6 ? s.mouth : pick(MOUTHS).id,
-    hat: Math.random() < 0.4 ? 'geen' : pick(free(HATS)).id,
-    face: Math.random() < 0.7 ? 'geen' : pick(free(FACES)).id,
+    hat: Math.random() < 0.4 ? 'none' : pick(free(HATS)).id,
+    face: Math.random() < 0.7 ? 'none' : pick(free(FACES)).id,
     keyboard: pick(free(KEYBOARDS)).id,
   });
 }
@@ -367,11 +367,11 @@ function randomize() {
 // --- drawings
 
 const FRAME_INFO = {
-  idle: ['Gewoon', 'Nodig'],
-  left: ['Linkerpootje', 'Toetsen links'],
-  right: ['Rechterpootje', 'Toetsen rechts, klikken'],
-  both: ['Allebei', 'De spatiebalk'],
-  sleep: ['Slapend', 'Als hij een dutje doet'],
+  idle: ['Normal', 'Required'],
+  left: ['Left paw', 'Keys on the left'],
+  right: ['Right paw', 'Keys on the right, clicks'],
+  both: ['Both paws', 'The space bar'],
+  sleep: ['Sleeping', 'When it takes a nap'],
 };
 
 function renderImageForm() {
@@ -383,7 +383,7 @@ function frameSlot(frame) {
   const wrap = make('div', 'frame');
   const drop = make('button', 'frame-drop');
   drop.type = 'button';
-  drop.setAttribute('aria-label', `Plaatje kiezen: ${FRAME_INFO[frame][0]}`);
+  drop.setAttribute('aria-label', `Choose picture: ${FRAME_INFO[frame][0]}`);
   if (isImageData(data)) {
     const img = new Image();
     img.src = data;
@@ -416,7 +416,7 @@ function frameSlot(frame) {
   label.append(make('small', '', FRAME_INFO[frame][1]));
   wrap.append(drop, input, label);
   if (isImageData(data)) {
-    wrap.append(iconButton('close', 'Plaatje weghalen', () => {
+    wrap.append(iconButton('close', 'Remove picture', () => {
       delete maker.image.frames[frame];
       renderImageForm();
       updateMakerPreview();
@@ -431,7 +431,7 @@ async function loadFrame(frame, file) {
     renderImageForm();
     updateMakerPreview();
   } catch (e) {
-    toast(e.message || 'Dat plaatje lukte niet.');
+    toast(e.message || "That picture didn't work.");
   }
 }
 
@@ -441,7 +441,7 @@ function readFile(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('Dat bestand kon ik niet lezen.'));
+    reader.onerror = () => reject(new Error("I couldn't read that file."));
     reader.readAsDataURL(file);
   });
 }
@@ -450,15 +450,15 @@ function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Dat bestand is geen plaatje dat ik kan openen.'));
+    img.onerror = () => reject(new Error("That file isn't a picture I can open."));
     img.src = src;
   });
 }
 
 /** Shrinks big pictures so the saved buddies stay small. */
 async function imageToDataUrl(file) {
-  if (!/^image\/(png|jpeg|gif|webp)$/.test(file.type)) throw new Error('Kies een PNG-, JPG-, GIF- of WebP-plaatje.');
-  if (file.size > 30e6) throw new Error('Dat plaatje is wel heel groot. Probeer een kleinere.');
+  if (!/^image\/(png|jpeg|gif|webp)$/.test(file.type)) throw new Error('Pick a PNG, JPG, GIF or WebP picture.');
+  if (file.size > 30e6) throw new Error('That picture is very large. Try a smaller one.');
   const raw = await readFile(file);
   const img = await loadImage(raw);
   const side = Math.max(img.naturalWidth, img.naturalHeight);
@@ -491,22 +491,22 @@ async function saveMaker() {
   } else {
     const img = maker.image;
     if (!isImageData(img.frames.idle)) {
-      toast('Kies eerst het gewone plaatje.');
+      toast('Pick the normal picture first.');
       return;
     }
     const frames = Object.fromEntries(FRAMES.filter((f) => isImageData(img.frames[f])).map((f) => [f, img.frames[f]]));
-    buddy = { id: img.id, kind: 'image', name: $('#image-name').value.trim() || 'Mijn tekening', frames };
+    buddy = { id: img.id, kind: 'image', name: $('#image-name').value.trim() || 'My drawing', frames };
   }
   try {
     await invoke('save_buddy', { buddy });
     await invoke('update_settings', { patch: { activeBuddy: buddy.id } });
   } catch (e) {
-    toast(`Opslaan lukte niet: ${e}`);
+    toast(`Couldn't save: ${e}`);
     return;
   }
   resetMaker();
-  toast(`${buddy.name} zit nu op je bureaublad!`);
-  showTab('buddy');
+  toast(`${buddy.name} is on your desktop now!`);
+  showTab('buddies');
 }
 
 // ---------------------------------------------------------------- collection
@@ -520,14 +520,14 @@ function renderStats() {
   const s = state.stats;
   const days = Object.entries(s.days || {});
   const best = days.reduce((a, [d, n]) => (n > a[1] ? [d, n] : a), ['', 0]);
-  const share = (n) => (s.total ? `${Math.round((n / s.total) * 100)}% van alle tikjes` : 'nog niets');
+  const share = (n) => (s.total ? `${Math.round((n / s.total) * 100)}% of all taps` : 'none yet');
   const tiles = [
-    ['Totaal', number.format(s.total), 'tikjes sinds het begin'],
-    ['Vandaag', number.format(state.today), new Date().toLocaleDateString('nl-NL', { weekday: 'long' })],
-    ['Toetsen', number.format(s.keys), share(s.keys)],
-    ['Klikken', number.format(s.clicks), share(s.clicks)],
-    ['Beste dag', number.format(best[1]), best[0] ? niceDate(best[0], { weekday: 'short', day: 'numeric', month: 'short' }) : 'komt nog'],
-    ['Samen sinds', s.firstDay ? niceDate(s.firstDay) : 'vandaag', `${days.length} ${days.length === 1 ? 'dag' : 'dagen'} getikt`],
+    ['Total', number.format(s.total), 'taps since the start'],
+    ['Today', number.format(state.today), new Date().toLocaleDateString('en-US', { weekday: 'long' })],
+    ['Keys', number.format(s.keys), share(s.keys)],
+    ['Clicks', number.format(s.clicks), share(s.clicks)],
+    ['Best day', number.format(best[1]), best[0] ? niceDate(best[0], { weekday: 'short', day: 'numeric', month: 'short' }) : 'still to come'],
+    ['Together since', s.firstDay ? niceDate(s.firstDay) : 'today', `${days.length} ${days.length === 1 ? 'day' : 'days'} of tapping`],
   ];
   $('#stats').replaceChildren(...tiles.map(([label, value, note]) => {
     const tile = make('div', 'card stat');
@@ -544,17 +544,17 @@ function renderNext() {
   const box = $('#next-unlock');
   box.replaceChildren();
   if (!next) {
-    box.append(make('h2', '', 'Alles verdiend!'), make('p', 'sub', 'Wauw. Je hebt echt alles. Je buddy is apetrots.'));
+    box.append(make('h2', '', 'Everything earned!'), make('p', 'sub', 'Wow. You really have it all. Your buddy is so proud.'));
     return;
   }
   const prev = [...UNLOCKS].reverse().find((u) => u.unlock <= t)?.unlock || 0;
   const pct = Math.max(3, Math.min(100, ((t - prev) / (next.unlock - prev)) * 100));
   const row = make('div', 'next-row');
-  row.append(make('h2', '', `Nog ${number.format(next.unlock - t)} tikjes tot: ${next.name}`),
-    make('span', 'muted', `${number.format(t)} van ${number.format(next.unlock)}`));
+  row.append(make('h2', '', `${number.format(next.unlock - t)} more taps until: ${next.name}`),
+    make('span', 'muted', `${number.format(t)} of ${number.format(next.unlock)}`));
   const meter = make('div', 'meter');
   meter.setAttribute('role', 'progressbar');
-  meter.setAttribute('aria-label', `Op weg naar ${next.name}`);
+  meter.setAttribute('aria-label', `On the way to ${next.name}`);
   meter.setAttribute('aria-valuemin', '0');
   meter.setAttribute('aria-valuemax', '100');
   meter.setAttribute('aria-valuenow', String(Math.round(pct)));
@@ -606,13 +606,13 @@ function renderChart() {
   days.forEach((day, i) => {
     const col = make('div', `chart-col${i === 13 ? ' today' : ''}`);
     col.tabIndex = 0;
-    const when = day.d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
-    col.setAttribute('aria-label', `${when}: ${number.format(day.value)} tikjes`);
+    const when = day.d.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
+    col.setAttribute('aria-label', `${when}: ${number.format(day.value)} taps`);
     const bar = make('div', 'bar');
     bar.style.height = `${(day.value / top) * 100}%`;
-    col.append(bar, make('span', 'day', day.d.toLocaleDateString('nl-NL', { weekday: 'short' }).replace('.', '')));
+    col.append(bar, make('span', 'day', day.d.toLocaleDateString('en-US', { weekday: 'short' })));
     const showTip = () => {
-      tip.replaceChildren(make('b', '', `${number.format(day.value)} tikjes`), document.createTextNode(i === 13 ? 'vandaag' : when));
+      tip.replaceChildren(make('b', '', `${number.format(day.value)} taps`), document.createTextNode(i === 13 ? 'today' : when));
       tip.hidden = false;
       const x = col.offsetLeft + col.offsetWidth / 2;
       const y = plot.clientHeight * (1 - day.value / top) - 8;
@@ -630,14 +630,14 @@ function renderChart() {
 
   // The same numbers as a table, for screen readers and for exact values.
   const details = make('details', 'chart-table');
-  details.append(make('summary', '', 'Bekijk als tabel'));
+  details.append(make('summary', '', 'Show as a table'));
   const table = make('table');
   const head = make('tr');
-  head.append(make('th', '', 'Dag'), make('th', '', 'Tikjes'));
+  head.append(make('th', '', 'Day'), make('th', '', 'Taps'));
   table.append(head);
   [...days].reverse().forEach((day) => {
     const tr = make('tr');
-    tr.append(make('td', '', day.d.toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })),
+    tr.append(make('td', '', day.d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' })),
       make('td', '', number.format(day.value)));
     table.append(tr);
   });
@@ -653,17 +653,17 @@ function renderUnlocks() {
     const tile = make('div', `card unlock ${earned ? 'earned' : 'locked'}`);
     const def = {
       ...base,
-      hat: item.slot === 'hat' ? item.id : 'geen',
-      face: item.slot === 'face' ? item.id : 'geen',
+      hat: item.slot === 'hat' ? item.id : 'none',
+      face: item.slot === 'face' ? item.id : 'none',
       keyboard: item.slot === 'keyboard' ? item.id : base.keyboard,
     };
     tile.innerHTML = `<div class="thumb">${item.slot === 'keyboard' ? renderBuddy(def) : renderPortrait(def)}</div>`;
     const status = make('div', 'unlock-state');
     status.innerHTML = earned ? ICONS.check : ICONS.lock;
-    status.append(make('span', '', earned ? 'Verdiend!' : `bij ${number.format(item.unlock)} tikjes`));
+    status.append(make('span', '', earned ? 'Earned!' : `at ${number.format(item.unlock)} taps`));
     tile.append(make('div', 'unlock-name', item.name), status);
     if (earned) {
-      const use = make('button', 'btn small', 'Uitproberen');
+      const use = make('button', 'btn small', 'Try it on');
       use.type = 'button';
       use.addEventListener('click', () => startMaker({ mode: 'drawn', buddy: { ...base, [item.slot]: item.id } }));
       tile.append(use);
@@ -674,10 +674,10 @@ function renderUnlocks() {
 
 let statsTimer = 0;
 function refreshStatsSoon() {
-  if (statsTimer || tab !== 'verzameling') return;
+  if (statsTimer || tab !== 'collection') return;
   statsTimer = setTimeout(() => {
     statsTimer = 0;
-    if (tab === 'verzameling') renderStats();
+    if (tab === 'collection') renderStats();
   }, 1000);
 }
 
@@ -697,18 +697,20 @@ function renderSettingsForm() {
   $('#set-ghost').checked = s.clickThrough;
   $('#set-counter').checked = s.showCounter;
   $('#set-lively').checked = s.lively;
+  $('#set-pixel').checked = Boolean(s.pixel);
+  document.body.classList.toggle('pixel', Boolean(s.pixel));
   $('#set-hidden').checked = s.hidden;
   $('#set-autostart').checked = state.autostart;
   const sleep = $('#set-sleep');
   if (![...sleep.options].some((o) => o.value === String(s.sleepMinutes))) {
-    sleep.append(new Option(`Na ${s.sleepMinutes} minuten`, String(s.sleepMinutes)));
+    sleep.append(new Option(`After ${s.sleepMinutes} minutes`, String(s.sleepMinutes)));
   }
   sleep.value = String(s.sleepMinutes);
   $$('[data-mouse]').forEach((b) => b.classList.toggle('on', b.dataset.mouse === s.mouseSide));
 }
 
 function patchSettings(patch) {
-  return invoke('update_settings', { patch }).catch((e) => toast(`Dat lukte niet: ${e}`));
+  return invoke('update_settings', { patch }).catch((e) => toast(`That didn't work: ${e}`));
 }
 
 let pendingPatch = null;
@@ -733,7 +735,7 @@ function wireSettings() {
     $('#out-opacity').textContent = `${e.target.value}%`;
     patchSoon({ opacity: Number(e.target.value) / 100 });
   });
-  const toggles = { '#set-top': 'alwaysOnTop', '#set-ghost': 'clickThrough', '#set-counter': 'showCounter', '#set-lively': 'lively', '#set-hidden': 'hidden' };
+  const toggles = { '#set-top': 'alwaysOnTop', '#set-ghost': 'clickThrough', '#set-counter': 'showCounter', '#set-lively': 'lively', '#set-pixel': 'pixel', '#set-hidden': 'hidden' };
   Object.entries(toggles).forEach(([sel, key]) => {
     $(sel).addEventListener('change', (e) => patchSettings({ [key]: e.target.checked }));
   });
@@ -743,15 +745,15 @@ function wireSettings() {
     try {
       state.autostart = await invoke('set_autostart', { enabled: e.target.checked });
     } catch (err) {
-      toast(`Dat lukte niet: ${err}`);
+      toast(`That didn't work: ${err}`);
     }
     e.target.checked = Boolean(state.autostart);
   });
   $('#reset-position').addEventListener('click', () => {
     invoke('reset_buddy_position');
-    toast('Je buddy staat weer rechtsonder.');
+    toast('Your buddy is back in the bottom-right corner.');
   });
-  confirmClick($('#quit'), () => invoke('quit'), 'Nog een keer klikken om af te sluiten');
+  confirmClick($('#quit'), () => invoke('quit'), 'Click again to quit');
 }
 
 // ---------------------------------------------------------------- macOS permission
@@ -767,7 +769,7 @@ function updatePermission() {
         clearInterval(permissionTimer);
         permissionTimer = 0;
         updatePermission();
-        toast('Gelukt! Nu zie ik je toetsaanslagen ook.');
+        toast('Done! Now I can see your key presses too.');
       }
     }, 3000);
   }
@@ -800,9 +802,9 @@ function onTap(tap) {
 
   const earned = UNLOCKS.find((u) => before < u.unlock && s.total >= u.unlock);
   if (earned) {
-    toast(`Nieuw verdiend: ${earned.name}!`);
-    if (tab === 'maken' && maker.mode === 'drawn') renderDrawnForm();
-    if (tab === 'verzameling') renderUnlocks();
+    toast(`Just earned: ${earned.name}!`);
+    if (tab === 'make' && maker.mode === 'drawn') renderDrawnForm();
+    if (tab === 'collection') renderUnlocks();
   }
 }
 
@@ -836,16 +838,16 @@ async function init() {
   $('#maker-save').addEventListener('click', saveMaker);
   $('#maker-cancel').addEventListener('click', () => {
     resetMaker();
-    showTab('buddy');
+    showTab('buddies');
   });
   confirmClick($('#maker-delete'), async () => {
     const id = maker.editingId;
     const name = $('#drawn-name').value || $('#image-name').value || 'Buddy';
     resetMaker();
     await invoke('delete_buddy', { id });
-    toast(`${name} is verwijderd.`);
-    showTab('buddy');
-  }, 'Nog een keer klikken om te verwijderen');
+    toast(`${name} was deleted.`);
+    showTab('buddies');
+  }, 'Click again to delete');
   $('#drawn-name').addEventListener('input', (e) => {
     if (maker.draft) maker.draft.name = e.target.value;
   });
@@ -864,7 +866,7 @@ async function init() {
     const prev = state.settings;
     state.settings = next;
     if (prev.activeBuddy !== next.activeBuddy || prev.mouseSide !== next.mouseSide) renderGallery();
-    if (prev.mouseSide !== next.mouseSide && tab === 'maken') updateMakerPreview();
+    if (prev.mouseSide !== next.mouseSide && tab === 'make') updateMakerPreview();
     renderSettingsForm();
   });
   await listen('buddies-changed', (list) => {
@@ -877,10 +879,10 @@ async function init() {
     const name = location.hash.slice(1);
     if (name !== tab) showTab(name);
   });
-  showTab(location.hash.slice(1) || 'buddy');
+  showTab(location.hash.slice(1) || 'buddies');
 }
 
 init().catch((e) => {
   console.error('[deskbuddy]', e);
-  document.body.append(make('pre', '', `DeskBuddy kon niet starten: ${e}`));
+  document.body.append(make('pre', '', `DeskBuddy couldn't start: ${e}`));
 });

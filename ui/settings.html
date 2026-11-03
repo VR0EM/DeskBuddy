@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,59 +16,59 @@
       <span class="brand-mark" data-icon="paw"></span>
       <span class="brand-name">DeskBuddy</span>
     </div>
-    <nav class="nav" aria-label="Onderdelen">
-      <button class="nav-item" data-tab="buddy"><i data-icon="buddy"></i><span>Mijn buddy</span></button>
-      <button class="nav-item" data-tab="maken"><i data-icon="brush"></i><span>Zelf maken</span></button>
-      <button class="nav-item" data-tab="verzameling"><i data-icon="trophy"></i><span>Verzameling</span></button>
-      <button class="nav-item" data-tab="instellingen"><i data-icon="gear"></i><span>Instellingen</span></button>
-      <button class="nav-item" data-tab="over"><i data-icon="info"></i><span>Over</span></button>
+    <nav class="nav" aria-label="Sections">
+      <button class="nav-item" data-tab="buddies"><i data-icon="buddy"></i><span>My buddy</span></button>
+      <button class="nav-item" data-tab="make"><i data-icon="brush"></i><span>Make your own</span></button>
+      <button class="nav-item" data-tab="collection"><i data-icon="trophy"></i><span>Collection</span></button>
+      <button class="nav-item" data-tab="preferences"><i data-icon="gear"></i><span>Settings</span></button>
+      <button class="nav-item" data-tab="about"><i data-icon="info"></i><span>About</span></button>
     </nav>
     <div class="side-total">
       <span class="side-total-value" id="side-total">0</span>
-      <span class="side-total-label">tikjes in totaal</span>
+      <span class="side-total-label">taps so far</span>
     </div>
   </aside>
 
   <main class="main" id="main">
     <div class="notice" id="permission" hidden>
       <i data-icon="keyboard"></i>
-      <p><b>Ik zie je toetsaanslagen nog niet.</b> Zet DeskBuddy aan bij
-        <i>Systeeminstellingen › Privacy en beveiliging › Invoermonitoring</i>.
-        Klikken zie ik al wel. Kies daarna &lsquo;Stop en open opnieuw&rsquo;.</p>
-      <button class="btn" id="open-permission">Open instellingen</button>
+      <p><b>I can't see your key presses yet.</b> Turn DeskBuddy on under
+        <i>System Settings › Privacy &amp; Security › Input Monitoring</i>.
+        Clicks already work. Then choose &lsquo;Quit &amp; Reopen&rsquo;.</p>
+      <button class="btn" id="open-permission">Open settings</button>
     </div>
 
     <!-- Welcome (first start) -->
-    <section class="tab" id="tab-welkom" hidden>
+    <section class="tab" id="tab-welcome" hidden>
       <div class="hero card">
-        <div class="stage-box with-hint"><div id="welcome-stage"></div><span class="stage-hint">Typ maar eens iets!</span></div>
+        <div class="stage-box with-hint"><div id="welcome-stage"></div><span class="stage-hint">Go on, type something!</span></div>
         <div>
-          <h1>Hoi! Ik ben je DeskBuddy.</h1>
-          <p>Ik zit vanaf nu rechtsonder op je scherm en tik mee als jij typt of klikt.
-            Gewoon zonder Steam, en wat je typt blijft van jou.</p>
+          <h1>Hi! I'm your DeskBuddy.</h1>
+          <p>From now on I sit in the bottom-right corner of your screen and tap along whenever
+            you type or click. No Steam needed, and what you type stays yours.</p>
           <ol class="steps">
-            <li><span><b>Sleep</b> me waar je maar wil. Ik onthoud mijn plekje.</span></li>
-            <li><span><b>Dubbelklik</b> op mij voor dit venster, <b>rechtsklik</b> voor een snelmenu.</span></li>
-            <li><span><b>Kies of maak</b> je eigen buddy en verdien hoedjes door te tikken.</span></li>
+            <li><span><b>Drag</b> me wherever you like. I'll remember my spot.</span></li>
+            <li><span><b>Double-click</b> me for this window, <b>right-click</b> for a quick menu.</span></li>
+            <li><span><b>Pick or make</b> your own buddy, and earn hats by tapping.</span></li>
           </ol>
           <div class="actions">
-            <button class="btn primary" data-goto="buddy">Kies je buddy</button>
-            <button class="btn" data-goto="maken">Maak er zelf een</button>
+            <button class="btn primary" data-goto="buddies">Pick your buddy</button>
+            <button class="btn" data-goto="make">Make your own</button>
           </div>
         </div>
       </div>
     </section>
 
     <!-- My buddy -->
-    <section class="tab" id="tab-buddy" hidden>
+    <section class="tab" id="tab-buddies" hidden>
       <header class="tab-head">
         <div>
-          <h1>Mijn buddy</h1>
-          <p class="sub">Kies wie er op je bureaublad zit. Typ even om te testen.</p>
+          <h1>My buddy</h1>
+          <p class="sub">Choose who sits on your desktop. Type a little to try them out.</p>
         </div>
         <div class="head-actions">
-          <button class="btn primary" id="new-drawn"><i data-icon="plus"></i>Nieuwe buddy</button>
-          <button class="btn" id="new-image"><i data-icon="image"></i>Van een tekening</button>
+          <button class="btn primary" id="new-drawn"><i data-icon="plus"></i>New buddy</button>
+          <button class="btn" id="new-image"><i data-icon="image"></i>From a drawing</button>
         </div>
       </header>
       <div class="buddy-layout">
@@ -76,174 +76,178 @@
           <div class="stage-box"><div id="live-stage"></div></div>
           <div class="live-name" id="live-name"></div>
           <div class="live-kind" id="live-kind"></div>
-          <button class="btn small" id="edit-active"><i data-icon="pencil"></i>Aanpassen</button>
+          <button class="btn small" id="edit-active"><i data-icon="pencil"></i>Customize</button>
         </div>
         <div class="gallery-wrap">
-          <h2 class="section-title">Jouw buddy's</h2>
+          <h2 class="section-title">Your buddies</h2>
           <div class="gallery" id="own-gallery"></div>
-          <h2 class="section-title">Kant-en-klaar</h2>
+          <h2 class="section-title">Ready-made</h2>
           <div class="gallery" id="preset-gallery"></div>
         </div>
       </div>
     </section>
 
     <!-- Maker -->
-    <section class="tab" id="tab-maken" hidden>
+    <section class="tab" id="tab-make" hidden>
       <header class="tab-head">
         <div>
-          <h1 id="maker-title">Zelf maken</h1>
-          <p class="sub" id="maker-sub">Ontwerp je eigen buddy, of gebruik je eigen tekeningen.</p>
+          <h1 id="maker-title">Make your own</h1>
+          <p class="sub" id="maker-sub">Design your own buddy, or use your own drawings.</p>
         </div>
-        <div class="segmented" role="group" aria-label="Soort buddy">
-          <button data-mode="drawn">Ontwerpen</button>
-          <button data-mode="image">Eigen tekening</button>
+        <div class="segmented" role="group" aria-label="Kind of buddy">
+          <button data-mode="drawn">Design</button>
+          <button data-mode="image">Own drawing</button>
         </div>
       </header>
       <div class="maker">
         <div class="card maker-preview">
-          <div class="stage-box with-hint"><div id="maker-stage"></div><span class="stage-hint">Typ of klik om te testen</span></div>
+          <div class="stage-box with-hint"><div id="maker-stage"></div><span class="stage-hint">Type or click to try it</span></div>
         </div>
 
         <div class="maker-form" id="maker-drawn">
-          <label class="field"><span>Naam</span><input type="text" id="drawn-name" maxlength="24" autocomplete="off" spellcheck="false"></label>
-          <div class="group"><h3>Dier</h3><div class="species" id="opt-species"></div></div>
+          <label class="field"><span>Name</span><input type="text" id="drawn-name" maxlength="24" autocomplete="off" spellcheck="false"></label>
+          <div class="group"><h3>Animal</h3><div class="species" id="opt-species"></div></div>
           <div class="group">
-            <h3>Kleuren</h3>
-            <div class="color-row" data-slot="body"><span>Vacht</span><div class="swatches"></div></div>
-            <div class="color-row" data-slot="accent"><span>Tweede kleur</span><div class="swatches"></div></div>
-            <div class="color-row" data-slot="paw"><span>Pootjes</span><div class="swatches"></div></div>
-            <div class="color-row" data-slot="cheek"><span>Wangetjes</span><div class="swatches"></div></div>
+            <h3>Colors</h3>
+            <div class="color-row" data-slot="body"><span>Fur</span><div class="swatches"></div></div>
+            <div class="color-row" data-slot="accent"><span>Second color</span><div class="swatches"></div></div>
+            <div class="color-row" data-slot="paw"><span>Paws</span><div class="swatches"></div></div>
+            <div class="color-row" data-slot="cheek"><span>Cheeks</span><div class="swatches"></div></div>
           </div>
-          <div class="group"><h3>Oogjes</h3><div class="chips" id="opt-eyes"></div></div>
-          <div class="group"><h3>Mondje</h3><div class="chips" id="opt-mouth"></div></div>
-          <div class="group"><h3>Op het hoofd</h3><div class="chips" id="opt-hat"></div></div>
-          <div class="group"><h3>Brilletje</h3><div class="chips" id="opt-face"></div></div>
-          <div class="group"><h3>Toetsenbord</h3><div class="chips" id="opt-keyboard"></div></div>
+          <div class="group"><h3>Eyes</h3><div class="chips" id="opt-eyes"></div></div>
+          <div class="group"><h3>Mouth</h3><div class="chips" id="opt-mouth"></div></div>
+          <div class="group"><h3>On the head</h3><div class="chips" id="opt-hat"></div></div>
+          <div class="group"><h3>Glasses</h3><div class="chips" id="opt-face"></div></div>
+          <div class="group"><h3>Keyboard</h3><div class="chips" id="opt-keyboard"></div></div>
         </div>
 
         <div class="maker-form" id="maker-image" hidden>
-          <label class="field"><span>Naam</span><input type="text" id="image-name" maxlength="24" autocomplete="off" spellcheck="false"></label>
-          <p class="help">Teken je buddy in een tekenprogramma, of gebruik een foto van je huisdier.
-            Sla hem op als <b>PNG met een doorzichtige achtergrond</b>, liefst allemaal even groot.
-            Eén plaatje is al genoeg: dan wipt hij mee als je typt. Met meer plaatjes tikt hij echt.</p>
+          <label class="field"><span>Name</span><input type="text" id="image-name" maxlength="24" autocomplete="off" spellcheck="false"></label>
+          <p class="help">Draw your buddy in any drawing app, or use a photo of your pet.
+            Save it as a <b>PNG with a transparent background</b>, ideally all the same size.
+            One picture is enough: it hops along as you type. With more pictures it really taps.</p>
           <div class="frames" id="frames"></div>
         </div>
       </div>
       <footer class="maker-bar">
-        <button class="btn ghost" id="maker-random"><i data-icon="dice"></i>Verras me</button>
-        <button class="btn ghost danger" id="maker-delete" hidden><i data-icon="trash"></i>Verwijderen</button>
+        <button class="btn ghost" id="maker-random"><i data-icon="dice"></i>Surprise me</button>
+        <button class="btn ghost danger" id="maker-delete" hidden><i data-icon="trash"></i>Delete</button>
         <span class="spacer"></span>
-        <button class="btn" id="maker-cancel">Annuleren</button>
-        <button class="btn primary" id="maker-save"><i data-icon="check"></i>Opslaan en gebruiken</button>
+        <button class="btn" id="maker-cancel">Cancel</button>
+        <button class="btn primary" id="maker-save"><i data-icon="check"></i>Save and use</button>
       </footer>
     </section>
 
     <!-- Collection -->
-    <section class="tab" id="tab-verzameling" hidden>
+    <section class="tab" id="tab-collection" hidden>
       <header class="tab-head">
         <div>
-          <h1>Verzameling</h1>
-          <p class="sub">Elke toets en elke klik telt. Zo verdien je nieuwe spulletjes voor je buddy's.</p>
+          <h1>Collection</h1>
+          <p class="sub">Every key press and every click counts. That's how you earn new things for your buddies.</p>
         </div>
       </header>
       <div class="stats" id="stats"></div>
       <div class="card next" id="next-unlock"></div>
       <div class="card chart-card">
-        <h2>Tikjes per dag</h2>
+        <h2>Taps per day</h2>
         <div id="chart"></div>
       </div>
-      <h2 class="section-title">Te verdienen</h2>
+      <h2 class="section-title">To earn</h2>
       <div class="unlocks" id="unlocks"></div>
     </section>
 
     <!-- Settings -->
-    <section class="tab" id="tab-instellingen" hidden>
-      <header class="tab-head"><div><h1>Instellingen</h1><p class="sub">Alles wordt meteen bewaard.</p></div></header>
+    <section class="tab" id="tab-preferences" hidden>
+      <header class="tab-head"><div><h1>Settings</h1><p class="sub">Changes are saved right away.</p></div></header>
       <div class="card settings-list">
         <div class="setting">
-          <div><b>Grootte</b><small>Hoe groot je buddy op het scherm staat.</small></div>
+          <div><b>Size</b><small>How big your buddy is on screen.</small></div>
           <div class="range"><input type="range" id="set-scale" min="50" max="250" step="5"><output id="out-scale"></output></div>
         </div>
         <div class="setting">
-          <div><b>Zichtbaarheid</b><small>Een beetje doorzichtig is fijn als hij voor iets staat.</small></div>
+          <div><b>Visibility</b><small>A little see-through is nice when it sits in front of something.</small></div>
           <div class="range"><input type="range" id="set-opacity" min="20" max="100" step="5"><output id="out-opacity"></output></div>
         </div>
         <div class="setting">
-          <div><b>Altijd bovenop</b><small>Blijft boven je andere vensters staan.</small></div>
+          <div><b>Pixel mode</b><small>Draws every buddy, hat and keyboard in chunky retro pixels.</small></div>
+          <label class="switch"><input type="checkbox" id="set-pixel"><span></span></label>
+        </div>
+        <div class="setting">
+          <div><b>Always on top</b><small>Stays above your other windows.</small></div>
           <label class="switch"><input type="checkbox" id="set-top"><span></span></label>
         </div>
         <div class="setting">
-          <div><b>Spookmodus</b><small>Klikken gaan dwars door je buddy heen. Zet het weer uit via het icoontje in de menubalk (Mac) of het systeemvak (Windows).</small></div>
+          <div><b>Ghost mode</b><small>Clicks go straight through your buddy. Turn it off again with the paw icon in the menu bar (Mac) or the system tray (Windows).</small></div>
           <label class="switch"><input type="checkbox" id="set-ghost"><span></span></label>
         </div>
         <div class="setting">
-          <div><b>Teller tonen</b><small>Het aantal tikjes linksboven bij je buddy.</small></div>
+          <div><b>Show counter</b><small>The number of taps in the top-left corner of your buddy.</small></div>
           <label class="switch"><input type="checkbox" id="set-counter"><span></span></label>
         </div>
         <div class="setting">
-          <div><b>Levendig</b><small>Rustig ademen en af en toe met de oortjes wiebelen. Uit is nog zuiniger: dan beweegt hij alleen als jij iets doet.</small></div>
+          <div><b>Lively</b><small>Gentle breathing and the occasional ear wiggle. Off saves even more energy: then it only moves when you do something.</small></div>
           <label class="switch"><input type="checkbox" id="set-lively"><span></span></label>
         </div>
         <div class="setting">
-          <div><b>In slaap vallen</b><small>Als je een tijdje niets doet, doet je buddy een dutje.</small></div>
+          <div><b>Fall asleep</b><small>When you don't do anything for a while, your buddy takes a nap.</small></div>
           <select id="set-sleep">
-            <option value="0">Nooit</option>
-            <option value="1">Na 1 minuut</option>
-            <option value="2">Na 2 minuten</option>
-            <option value="5">Na 5 minuten</option>
-            <option value="10">Na 10 minuten</option>
-            <option value="30">Na 30 minuten</option>
+            <option value="0">Never</option>
+            <option value="1">After 1 minute</option>
+            <option value="2">After 2 minutes</option>
+            <option value="5">After 5 minutes</option>
+            <option value="10">After 10 minutes</option>
+            <option value="30">After 30 minutes</option>
           </select>
         </div>
         <div class="setting">
-          <div><b>Muis</b><small>Aan welke kant van het toetsenbord je muis ligt.</small></div>
-          <div class="segmented" role="group" aria-label="Muis">
-            <button data-mouse="left">Links</button>
-            <button data-mouse="right">Rechts</button>
+          <div><b>Mouse</b><small>Which side of the keyboard your mouse is on.</small></div>
+          <div class="segmented" role="group" aria-label="Mouse side">
+            <button data-mouse="left">Left</button>
+            <button data-mouse="right">Right</button>
           </div>
         </div>
         <div class="setting">
-          <div><b>Starten bij inloggen</b><small>DeskBuddy start vanzelf als je je computer aanzet.</small></div>
+          <div><b>Start at login</b><small>DeskBuddy starts by itself when you turn on your computer.</small></div>
           <label class="switch"><input type="checkbox" id="set-autostart"><span></span></label>
         </div>
       </div>
       <div class="card settings-list">
         <div class="setting">
-          <div><b>Buddy kwijt?</b><small>Zet hem terug rechtsonder op je hoofdscherm.</small></div>
-          <button class="btn" id="reset-position">Terug naar de hoek</button>
+          <div><b>Lost your buddy?</b><small>Puts it back in the bottom-right corner of your main screen.</small></div>
+          <button class="btn" id="reset-position">Back to the corner</button>
         </div>
         <div class="setting">
-          <div><b>Buddy verbergen</b><small>Even geen buddy op je scherm. Hij blijft wel meetellen.</small></div>
+          <div><b>Hide buddy</b><small>No buddy on screen for a while. It keeps counting.</small></div>
           <label class="switch"><input type="checkbox" id="set-hidden"><span></span></label>
         </div>
         <div class="setting">
-          <div><b>Afsluiten</b><small>Stopt DeskBuddy helemaal, tot je hem weer opent.</small></div>
-          <button class="btn danger" id="quit">DeskBuddy afsluiten</button>
+          <div><b>Quit</b><small>Stops DeskBuddy completely, until you open it again.</small></div>
+          <button class="btn danger" id="quit">Quit DeskBuddy</button>
         </div>
       </div>
     </section>
 
     <!-- About -->
-    <section class="tab" id="tab-over" hidden>
-      <header class="tab-head"><div><h1>Over DeskBuddy</h1></div></header>
+    <section class="tab" id="tab-about" hidden>
+      <header class="tab-head"><div><h1>About DeskBuddy</h1></div></header>
       <div class="card prose">
-        <h2>Wat je typt blijft van jou</h2>
-        <p>DeskBuddy telt alleen <b>hoeveel</b> toetsen en klikken je doet, en of een toets links of
-          rechts op je toetsenbord zit (zo weet hij welk pootje hij moet gebruiken). <b>Welke</b> toets
-          je indrukt wordt nooit bekeken of bewaard, en DeskBuddy maakt geen verbinding met internet.</p>
-        <p>Je instellingen, buddy's en tellers staan in een mapje op je eigen computer.</p>
-        <h2>Handige trucjes</h2>
+        <h2>What you type stays yours</h2>
+        <p>DeskBuddy only counts <b>how many</b> keys and clicks you make, and whether a key is on the left
+          or the right of your keyboard (so it knows which paw to use). <b>Which</b> key you press is never
+          looked at or stored, and DeskBuddy never connects to the internet.</p>
+        <p>Your settings, buddies and counters live in a folder on your own computer.</p>
+        <h2>Handy tricks</h2>
         <ul>
-          <li><b>Slepen</b> verplaatst je buddy. Hij onthoudt waar hij staat.</li>
-          <li><b>Klikken</b> op je buddy vindt hij leuk.</li>
-          <li><b>Dubbelklikken</b> opent dit venster, <b>rechtsklikken</b> geeft een snelmenu.</li>
-          <li>Staat hij in de weg? Zet <b>Spookmodus</b> aan, dan klik je dwars door hem heen.</li>
-          <li>Na een tijdje niets doen valt hij in slaap. Eén toets en hij is weer wakker.</li>
+          <li><b>Drag</b> to move your buddy. It remembers where it sits.</li>
+          <li><b>Clicking</b> your buddy makes it happy.</li>
+          <li><b>Double-click</b> opens this window, <b>right-click</b> gives a quick menu.</li>
+          <li>In the way? Turn on <b>Ghost mode</b> and click right through it.</li>
+          <li>After a while without input it falls asleep. One key and it's awake again.</li>
         </ul>
-        <h2>Lekker zuinig</h2>
-        <p>Geen Steam en geen zware programma's op de achtergrond. DeskBuddy gebruikt de webweergave die al
-          in je systeem zit en tekent alleen iets nieuws als er iets verandert.</p>
-        <p class="muted">Versie <span id="version"></span> · Lettertype Nunito (SIL Open Font License)</p>
+        <h2>Light on your computer</h2>
+        <p>No Steam and no heavy programs in the background. DeskBuddy uses the web view that's already
+          part of your system, and only redraws when something changes.</p>
+        <p class="muted">Version <span id="version"></span> · Nunito font (SIL Open Font License)</p>
       </div>
     </section>
   </main>
