@@ -1,6 +1,6 @@
 [package]
 name = "deskbuddy"
-version = "0.1.0"
+version = "1.0.0"
 description = "Cute desk buddies that tap along while you type"
 edition = "2021"
 publish = false

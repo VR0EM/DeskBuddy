@@ -1,7 +1,7 @@
 {
   "name": "deskbuddy",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Schattige bureau-buddy's die meetikken als je typt. Zonder Steam.",
   "scripts": {
     "tauri": "tauri",
