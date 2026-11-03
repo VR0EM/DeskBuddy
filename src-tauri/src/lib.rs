@@ -554,12 +554,17 @@ fn start_input(app: AppHandle) {
 }
 
 /// Saves counts every few seconds instead of on every tap.
+/// With DESKBUDDY_DEBUG set, it also logs how the input listener is doing.
 fn start_autosave(app: AppHandle) {
+    let debug = std::env::var_os("DESKBUDDY_DEBUG").is_some();
     let spawned = std::thread::Builder::new()
         .name("deskbuddy-autosave".into())
         .spawn(move || loop {
             std::thread::sleep(Duration::from_secs(15));
             store(&app).flush();
+            if debug {
+                eprintln!("[deskbuddy] input: {}", deskbuddy_input::diagnostics());
+            }
         });
     if let Err(e) = spawned {
         eprintln!("[deskbuddy] could not start autosave: {e}");

@@ -89,11 +89,17 @@ Get-Content 'smoke\listen.txt', 'smoke\listen-err.txt' -ErrorAction SilentlyCont
 
 '--- the app'
 $exe = 'src-tauri\target\release\deskbuddy.exe'
+$env:DESKBUDDY_DEBUG = '1'
 $app = Start-Process -FilePath $exe -PassThru -RedirectStandardError 'smoke\stderr.txt' -RedirectStandardOutput 'smoke\stdout.txt'
 Start-Sleep -Seconds 15
 Save-Screenshot 'smoke\windows-start.png'
 
-# Real key presses and clicks through the system's input queue.
+# Real key presses and clicks through the system's input queue: first while
+# DeskBuddy's own window has the focus, then while Notepad has it.
+Send-TestInput
+$notepad = Start-Process notepad -PassThru
+Start-Sleep -Seconds 3
+'--- now typing into Notepad'
 Send-TestInput
 
 # Autosave runs every 15 seconds.
@@ -112,6 +118,7 @@ Get-Content (Join-Path $data 'stats.json') -ErrorAction SilentlyContinue
 
 $running = -not $app.HasExited
 if ($running) { Stop-Process -Id $app.Id -Force; Start-Sleep -Seconds 1 }
+Stop-Process -Id $notepad.Id -Force -ErrorAction SilentlyContinue
 '--- app output'
 Get-Content 'smoke\stderr.txt', 'smoke\stdout.txt' -ErrorAction SilentlyContinue
 
