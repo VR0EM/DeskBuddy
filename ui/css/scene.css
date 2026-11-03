@@ -1,0 +1,181 @@
+/* Poses and moods for a rendered buddy (see js/render.js).
+   Classes on any ancestor switch them: l-down, r-down, l-mouse, r-mouse,
+   blink, sleep, fast, twitch, lively. Poses swap instantly, which keeps
+   tapping snappy and costs almost nothing to draw. */
+
+.buddy-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.buddy-svg .paw,
+.buddy-svg .eyes-closed,
+.buddy-svg .m-excited,
+.buddy-svg .m-sleep,
+.buddy-svg .zzz,
+.buddy-svg .fx-fast {
+  display: none;
+}
+
+.buddy-svg .paw.up { display: inline; }
+
+.l-down .paw.l.up,
+.l-mouse .paw.l.up,
+.l-mouse .paw.l.down,
+.r-down .paw.r.up,
+.r-mouse .paw.r.up,
+.r-mouse .paw.r.down { display: none; }
+
+.l-down .paw.l.down,
+.r-down .paw.r.down,
+.l-mouse .paw.l.mouse,
+.r-mouse .paw.r.mouse { display: inline; }
+
+.l-mouse .paw.l.down,
+.r-mouse .paw.r.down { display: none; }
+
+.blink .eyes-open,
+.sleep .eyes-open { display: none; }
+.blink .eyes-closed,
+.sleep .eyes-closed { display: inline; }
+
+.fast .m-normal { display: none; }
+.fast .m-excited { display: inline; }
+.sleep .m-normal,
+.sleep .m-excited { display: none; }
+.sleep .m-sleep { display: inline; }
+
+.fast .fx-fast { display: inline; }
+.sleep .fx-fast { display: none; }
+
+.buddy-svg .key.lit,
+.buddy-svg .mouse-btn.lit { fill: var(--lit); }
+
+/* Sleeping: three z's appear one after the other. Step timing means the
+   browser only repaints a few times per cycle. */
+.sleep .zzz { display: inline; }
+.buddy-svg .z {
+  font-family: 'Nunito', ui-rounded, system-ui, sans-serif;
+  font-weight: 800;
+  opacity: 0.7;
+}
+.sleep .buddy-svg .z1 { animation: z1 3s steps(1, end) infinite; }
+.sleep .buddy-svg .z2 { animation: z2 3s steps(1, end) infinite; }
+.sleep .buddy-svg .z3 { animation: z3 3s steps(1, end) infinite; }
+@keyframes z1 { 0% { opacity: 0.7; } 85% { opacity: 0; } }
+@keyframes z2 { 0% { opacity: 0; } 25% { opacity: 0.7; } 85% { opacity: 0; } }
+@keyframes z3 { 0% { opacity: 0; } 50% { opacity: 0.7; } 85% { opacity: 0; } }
+
+/* Idle life, only in "lively" mode. */
+.lively:not(.sleep) .buddy-svg .breathe {
+  animation: breathe 4.5s ease-in-out infinite;
+  transform-origin: 120px 166px;
+}
+.lively.sleep .buddy-svg .breathe {
+  animation: breathe 7s ease-in-out infinite;
+  transform-origin: 120px 166px;
+}
+@keyframes breathe {
+  50% { transform: scale(1.008, 1.018); }
+}
+
+.buddy-svg .ear-l { transform-origin: var(--elx) var(--ely); }
+.buddy-svg .ear-r { transform-origin: var(--erx) var(--ery); }
+.twitch .buddy-svg .ear-l { animation: twitch-l 0.45s ease-in-out; }
+.twitch .buddy-svg .ear-r { animation: twitch-r 0.45s ease-in-out 0.08s; }
+@keyframes twitch-l {
+  35% { transform: rotate(-9deg); }
+  70% { transform: rotate(3deg); }
+}
+@keyframes twitch-r {
+  35% { transform: rotate(9deg); }
+  70% { transform: rotate(-3deg); }
+}
+
+.buddy-svg .tail { transform-origin: var(--tx) var(--ty); }
+.fast .buddy-svg .tail { animation: wag 0.32s ease-in-out infinite alternate; }
+@keyframes wag {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+
+.buddy-svg .prop {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.fast .buddy-svg .prop { animation: spin 0.3s linear infinite; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buddy-svg *,
+  .buddy-svg { animation: none !important; }
+  .sleep .buddy-svg .z { opacity: 0.7; }
+}
+
+/* ---- Shared stage bits: boops, drawn-image buddies ---- */
+
+.buddy-stage {
+  position: relative;
+  container-type: size;
+}
+
+.boop .buddy-svg .eyes-open { display: none; }
+.boop .buddy-svg .eyes-closed { display: inline; }
+
+.boop-heart {
+  position: absolute;
+  top: 6%;
+  width: 11%;
+  aspect-ratio: 1;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.1C.9 8.6 2.8 4.8 6.4 4.5c2.2-.2 4 1 5.6 3 1.6-2 3.4-3.2 5.6-3 3.6.3 5.5 4.1 4 7.4C19.5 16.4 12 21 12 21z' fill='%23ff6f9c' stroke='%23d94877' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  animation: heart-up 1.1s ease-out forwards;
+}
+@keyframes heart-up {
+  0% { transform: translateY(20%) scale(0.5); opacity: 0; }
+  20% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-110%) scale(0.9); opacity: 0; }
+}
+
+.img-buddy {
+  position: absolute;
+  inset: 3% 5% 1%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.img-buddy img {
+  display: none;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  user-select: none;
+  transform-origin: 50% 100%;
+}
+.img-buddy[data-frame='idle'] .f-idle,
+.img-buddy[data-frame='left'] .f-left,
+.img-buddy[data-frame='right'] .f-right,
+.img-buddy[data-frame='both'] .f-both,
+.img-buddy[data-frame='sleep'] .f-sleep { display: block; }
+.img-buddy.bop img { animation: bop 0.16s ease-out; }
+@keyframes bop {
+  45% { transform: scale(1.05, 0.92); }
+}
+.img-zzz {
+  display: none;
+  position: absolute;
+  right: 3%;
+  top: 0;
+  color: #3a2a35;
+  opacity: 0.7;
+  font: 800 16px/1 'Nunito', ui-rounded, system-ui, sans-serif;
+  font-size: 7cqw;
+}
+.img-zzz span { font-size: 1.3em; margin-left: 0.1em; }
+.img-zzz b { font-size: 1.7em; margin-left: 0.1em; }
+.sleep .img-zzz { display: block; }

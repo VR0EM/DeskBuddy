@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Icon renderer (dev)</title>
+<link rel="stylesheet" href="../ui/css/scene.css">
+<style>
+  html, body { margin: 0; background: transparent; }
+  .tile { position: relative; width: 1024px; height: 1024px; }
+  /* macOS-style rounded square with breathing room around it */
+  .bg {
+    position: absolute; left: 100px; top: 100px; width: 824px; height: 824px; border-radius: 185px;
+    background: linear-gradient(160deg, #fff3ea 0%, #ffd9cf 55%, #ffc2cf 100%);
+    box-shadow: inset 0 -10px 0 rgba(58, 42, 53, 0.06);
+  }
+  .art { position: absolute; left: 132px; top: 150px; width: 760px; height: 760px; }
+  .art svg { width: 100%; height: 100%; overflow: hidden; }
+  .art .tail { display: none; }
+  .bg-clip { position: absolute; left: 100px; top: 100px; width: 824px; height: 824px; border-radius: 185px; overflow: hidden; }
+  .bg-clip .art { left: 32px; top: 50px; }
+  .tray { width: 64px; height: 64px; }
+  .tray svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script type="module">
+  import { renderPortrait } from '../ui/js/render.js';
+  import { PRESETS } from '../ui/js/catalog.js';
+  const kind = new URLSearchParams(location.search).get('kind') || 'app';
+  const out = document.getElementById('out');
+  const paw = (fill, stroke) => `<svg viewBox="0 0 24 24"><g fill="${fill}" stroke="${stroke}" stroke-width="${stroke === 'none' ? 0 : 1.3}"><ellipse cx="12" cy="15.6" rx="5.8" ry="4.9"/><ellipse cx="4.8" cy="10" rx="2.5" ry="3.1"/><ellipse cx="9.2" cy="5.6" rx="2.5" ry="3.2"/><ellipse cx="14.8" cy="5.6" rx="2.5" ry="3.2"/><ellipse cx="19.2" cy="10" rx="2.5" ry="3.1"/></g></svg>`;
+  if (kind === 'app') {
+    out.innerHTML = `<div class="tile"><div class="bg"></div><div class="bg-clip"><div class="art">${renderPortrait(PRESETS[0])}</div></div></div>`;
+  } else if (kind === 'tray-template') {
+    out.innerHTML = `<div class="tray">${paw('#000000', 'none')}</div>`;
+  } else {
+    out.innerHTML = `<div class="tray">${paw('#ff8fa8', '#7a3446')}</div>`;
+  }
+  document.body.dataset.ready = '1';
+</script>
+</body>
+</html>

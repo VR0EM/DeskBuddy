@@ -1,0 +1,18 @@
+[package]
+name = "deskbuddy-input"
+version = "0.1.0"
+edition = "2021"
+description = "Global keyboard/mouse activity listener for DeskBuddy. Counts presses, never records keys."
+publish = false
+
+[dependencies]
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-sys = { version = "0.61", features = [
+  "Win32_Foundation",
+  "Win32_System_LibraryLoader",
+  "Win32_UI_WindowsAndMessaging",
+] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+rdev = "0.5"

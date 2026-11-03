@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Buddy gallery (dev)</title>
+<link rel="stylesheet" href="../ui/css/fonts.css">
+<link rel="stylesheet" href="../ui/css/scene.css">
+<style>
+  body { font-family: Nunito, sans-serif; background: #f3eee9; margin: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(var(--cols, 5), 240px); gap: 10px; }
+  .cell { background: #fff; border-radius: 14px; padding: 4px; }
+  .cell .stage { width: 240px; height: 200px; }
+  .cell p { margin: 2px 8px 6px; font-size: 13px; color: #6b5b66; }
+  .dark { background: #2a2733; }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<script type="module">
+  import { renderBuddy } from '../ui/js/render.js';
+  import { PRESETS, HATS, FACES, KEYBOARDS, EYES, MOUTHS, findBuddy } from '../ui/js/catalog.js';
+  const q = new URLSearchParams(location.search);
+  const mode = q.get('mode') || 'presets';
+  const cells = [];
+  const add = (def, label, cls = '', opts = {}) => cells.push({ def, label, cls, opts });
+  const base = (id) => findBuddy(id, []);
+  if (mode === 'presets') PRESETS.forEach((p) => add(p, `${p.name} (${p.species})`));
+  if (mode === 'poses') {
+    const id = q.get('id') || 'pip';
+    const p = base(id);
+    [['', 'idle'], ['l-down', 'links'], ['r-down', 'rechts'], ['l-down r-down', 'spatie'], ['r-mouse', 'muis'], ['blink', 'knipper'], ['sleep', 'slaap'], ['fast l-down', 'snel'], ['l-mouse', 'muis links', { mouseSide: 'left' }]]
+      .forEach(([cls, label, opts]) => add(p, label, cls, opts || {}));
+  }
+  if (mode === 'hats') HATS.forEach((h, i) => add({ ...base(PRESETS[i % PRESETS.length].id), hat: h.id }, h.name));
+  if (mode === 'faces') FACES.forEach((h, i) => add({ ...base(PRESETS[(i * 3) % PRESETS.length].id), face: h.id }, h.name));
+  if (mode === 'keyboards') KEYBOARDS.forEach((k, i) => add({ ...base('pip'), keyboard: k.id }, k.name));
+  if (mode === 'eyes') EYES.forEach((e) => MOUTHS.forEach((m) => add({ ...base('pinda'), eyes: e.id, mouth: m.id }, `${e.name} + ${m.name}`)));
+  if (mode === 'frog') HATS.forEach((h) => add({ ...base('flip'), hat: h.id }, h.name));
+  if (mode === 'sleep') PRESETS.forEach((p) => add(p, p.name, 'sleep'));
+  if (mode === 'allposes') PRESETS.forEach((p) => add(p, p.name + ' tik', 'l-down r-mouse fast'));
+  const grid = document.getElementById('grid');
+  if (q.get('cols')) grid.style.setProperty('--cols', q.get('cols'));
+  grid.innerHTML = cells.map((c, i) => `<div class="cell"><div class="stage ${c.cls}">${renderBuddy(c.def, c.opts)}</div><p>${c.label}</p></div>`).join('');
+  document.body.dataset.ready = '1';
+</script>
+</body>
+</html>
