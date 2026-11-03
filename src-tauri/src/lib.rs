@@ -522,7 +522,7 @@ fn start_input(app: AppHandle) {
         eprintln!("[deskbuddy] input listener unavailable: {e}");
         return;
     }
-    eprintln!("[deskbuddy] listening for keys and clicks");
+    eprintln!("[deskbuddy] listening: {}", deskbuddy_input::diagnostics());
     let spawned = std::thread::Builder::new()
         .name("deskbuddy-taps".into())
         .spawn(move || {

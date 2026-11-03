@@ -205,3 +205,10 @@ pub fn request_keyboard_access() {
         CGRequestListenEventAccess();
     }
 }
+
+pub fn diagnostics() -> String {
+    format!(
+        "event taps, Input Monitoring allowed: {}",
+        keyboard_access()
+    )
+}

@@ -28,6 +28,9 @@ mod platform {
         false
     }
     pub fn request_keyboard_access() {}
+    pub fn diagnostics() -> String {
+        "not supported".into()
+    }
 }
 
 /// Which half of the keyboard a key sits on.
@@ -71,4 +74,9 @@ pub fn keyboard_access() -> bool {
 /// Does nothing on other systems.
 pub fn request_keyboard_access() {
     platform::request_keyboard_access()
+}
+
+/// One line about the listener's state, for logs and troubleshooting.
+pub fn diagnostics() -> String {
+    platform::diagnostics()
 }

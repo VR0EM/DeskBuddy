@@ -59,3 +59,7 @@ pub fn keyboard_access() -> bool {
 }
 
 pub fn request_keyboard_access() {}
+
+pub fn diagnostics() -> String {
+    "X11 record listener".into()
+}

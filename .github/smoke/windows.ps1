@@ -61,24 +61,40 @@ function Find-Buddy($path) {
   return $result
 }
 
+function Send-TestInput {
+  foreach ($vk in 0x41, 0x53, 0x44, 0x46, 0x20, 0x4A, 0x4B, 0x4C, 0x48, 0x41) {
+    [FakeInput]::keybd_event([byte]$vk, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 40
+    [FakeInput]::keybd_event([byte]$vk, 0, 2, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 90
+  }
+  [void][FakeInput]::SetCursorPos(5, 300)
+  foreach ($n in 1..3) {
+    [FakeInput]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero)
+    [FakeInput]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 150
+  }
+}
+
+# First the input listener on its own (cargo run -p deskbuddy-input --example listen).
+'--- input listener on its own'
+Push-Location src-tauri
+cargo build -p deskbuddy-input --example listen --release --quiet
+Pop-Location
+$listen = Start-Process -FilePath 'src-tauri\target\release\examples\listen.exe' -ArgumentList '8' -PassThru -NoNewWindow -RedirectStandardOutput 'smoke\listen.txt' -RedirectStandardError 'smoke\listen-err.txt'
+Start-Sleep -Seconds 2
+Send-TestInput
+$listen.WaitForExit(15000) | Out-Null
+Get-Content 'smoke\listen.txt', 'smoke\listen-err.txt' -ErrorAction SilentlyContinue
+
+'--- the app'
 $exe = 'src-tauri\target\release\deskbuddy.exe'
 $app = Start-Process -FilePath $exe -PassThru -RedirectStandardError 'smoke\stderr.txt' -RedirectStandardOutput 'smoke\stdout.txt'
 Start-Sleep -Seconds 15
 Save-Screenshot 'smoke\windows-start.png'
 
 # Real key presses and clicks through the system's input queue.
-foreach ($vk in 0x41, 0x53, 0x44, 0x46, 0x20, 0x4A, 0x4B, 0x4C, 0x48, 0x41) {
-  [FakeInput]::keybd_event([byte]$vk, 0, 0, [UIntPtr]::Zero)
-  Start-Sleep -Milliseconds 40
-  [FakeInput]::keybd_event([byte]$vk, 0, 2, [UIntPtr]::Zero)
-  Start-Sleep -Milliseconds 90
-}
-[void][FakeInput]::SetCursorPos(5, 300)
-foreach ($n in 1..3) {
-  [FakeInput]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero)
-  [FakeInput]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero)
-  Start-Sleep -Milliseconds 150
-}
+Send-TestInput
 
 # Autosave runs every 15 seconds.
 Start-Sleep -Seconds 18

@@ -2,15 +2,15 @@
 //! No special permissions are needed.
 
 use std::ptr::{null, null_mut};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::mpsc::{self, Sender};
 use std::sync::OnceLock;
 
-use windows_sys::Win32::Foundation::{LPARAM, LRESULT, WPARAM};
+use windows_sys::Win32::Foundation::{GetLastError, LPARAM, LRESULT, WPARAM};
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     CallNextHookEx, DispatchMessageW, GetMessageW, SetWindowsHookExW, TranslateMessage, HC_ACTION,
-    KBDLLHOOKSTRUCT, LLKHF_EXTENDED, MSG, WH_KEYBOARD_LL, WH_MOUSE_LL, WM_KEYDOWN, WM_KEYUP,
+    HHOOK, KBDLLHOOKSTRUCT, LLKHF_EXTENDED, MSG, WH_KEYBOARD_LL, WH_MOUSE_LL, WM_KEYDOWN, WM_KEYUP,
     WM_LBUTTONDOWN, WM_MBUTTONDOWN, WM_RBUTTONDOWN, WM_SYSKEYDOWN, WM_SYSKEYUP, WM_XBUTTONDOWN,
 };
 
@@ -20,6 +20,11 @@ static SENDER: OnceLock<Sender<InputEvent>> = OnceLock::new();
 
 /// Which virtual keys are currently held, to ignore auto-repeat.
 static HELD: [AtomicBool; 256] = [const { AtomicBool::new(false) }; 256];
+
+// For `diagnostics()`: how the hooks were installed and how often they ran.
+static STATUS: OnceLock<String> = OnceLock::new();
+static KEY_CALLS: AtomicU64 = AtomicU64::new(0);
+static MOUSE_CALLS: AtomicU64 = AtomicU64::new(0);
 
 fn send(event: InputEvent) {
     if let Some(tx) = SENDER.get() {
@@ -31,6 +36,7 @@ fn send(event: InputEvent) {
 // They only push onto an unbounded channel, which never blocks.
 
 unsafe extern "system" fn keyboard_proc(code: i32, wparam: WPARAM, lparam: LPARAM) -> LRESULT {
+    KEY_CALLS.fetch_add(1, Ordering::Relaxed);
     if code == HC_ACTION as i32 && lparam != 0 {
         let info = &*(lparam as *const KBDLLHOOKSTRUCT);
         let held = &HELD[(info.vkCode & 0xFF) as usize];
@@ -60,10 +66,19 @@ unsafe extern "system" fn mouse_proc(code: i32, wparam: WPARAM, lparam: LPARAM) 
             _ => None,
         };
         if let Some(button) = button {
+            MOUSE_CALLS.fetch_add(1, Ordering::Relaxed);
             send(InputEvent::Mouse(button));
         }
     }
     CallNextHookEx(null_mut(), code, wparam, lparam)
+}
+
+fn describe(hook: HHOOK, error: u32) -> String {
+    if hook.is_null() {
+        format!("failed (error {error})")
+    } else {
+        "ok".to_string()
+    }
 }
 
 pub fn start(tx: Sender<InputEvent>) -> Result<(), String> {
@@ -77,7 +92,14 @@ pub fn start(tx: Sender<InputEvent>) -> Result<(), String> {
         .spawn(move || unsafe {
             let module = GetModuleHandleW(null());
             let keyboard = SetWindowsHookExW(WH_KEYBOARD_LL, Some(keyboard_proc), module, 0);
+            let keyboard_error = GetLastError();
             let mouse = SetWindowsHookExW(WH_MOUSE_LL, Some(mouse_proc), module, 0);
+            let mouse_error = GetLastError();
+            let _ = STATUS.set(format!(
+                "keyboard hook {}, mouse hook {}",
+                describe(keyboard, keyboard_error),
+                describe(mouse, mouse_error)
+            ));
             let status = if keyboard.is_null() && mouse.is_null() {
                 Err("could not install the keyboard and mouse hooks".to_string())
             } else {
@@ -108,3 +130,12 @@ pub fn keyboard_access() -> bool {
 }
 
 pub fn request_keyboard_access() {}
+
+pub fn diagnostics() -> String {
+    format!(
+        "{}; keyboard hook called {} times, {} clicks seen",
+        STATUS.get().map(String::as_str).unwrap_or("not started"),
+        KEY_CALLS.load(Ordering::Relaxed),
+        MOUSE_CALLS.load(Ordering::Relaxed)
+    )
+}
